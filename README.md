@@ -21,7 +21,7 @@ Code Challenge - NestJS + TypeORM + GraphQL + Jest
 - [x] New recipes can be listed at real time
 - [x] New recipes can be created
 - [x] Recipe, Recipes can be listed
-- [] Recipe can be deleted 
+- [ ] Recipe can be deleted 
 - [ ] Add Swagger support
 - [ ] DataLoader integration
 
