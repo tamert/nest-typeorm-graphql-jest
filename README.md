@@ -21,6 +21,7 @@ Code Challenge - NestJS + TypeORM + GraphQL + Jest
 - [x] New recipes can be listed at real time
 - [x] New recipes can be created
 - [x] Recipe, Recipes can be listed
+- [x] Graphql can be testing
 - [ ] Recipe can be deleted 
 - [ ] Add Swagger support
 - [ ] DataLoader integration
@@ -31,7 +32,7 @@ Code Challenge - NestJS + TypeORM + GraphQL + Jest
 - [x] Nest.js
 - [x] GraphQL
 - [x] TypeORM
-- [ ] Jest
+- [x] Jest
 
 ## What can be better?
 
@@ -47,6 +48,10 @@ Code Challenge - NestJS + TypeORM + GraphQL + Jest
 2. Run `npm or yarn install` at each project in order to install dependencies.<br />
 3. Run `yarn start:dev` for `back-end` and `yarn start` for `front-end` folder.<br />
 4. Access `localhost:3000` in your browser. GraphQL playground: `localhost:3333/graphql`.<br />
+
+## Testing
+
+Run `npm run test:e2e` and watch 
 
 ## Contributing
 
