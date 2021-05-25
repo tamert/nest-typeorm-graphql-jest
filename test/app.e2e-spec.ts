@@ -2,6 +2,7 @@ import {Test, TestingModule} from '@nestjs/testing';
 import * as request from 'supertest';
 import {AppModule} from '../src/app.module';
 import {FastifyAdapter} from '@nestjs/platform-fastify';
+import { ValidationPipe } from '@nestjs/common';
 
 describe('AppController (e2e)', () => {
     let app;
@@ -13,6 +14,7 @@ describe('AppController (e2e)', () => {
 
         app = moduleFixture.createNestApplication(new FastifyAdapter());
 
+        app.useGlobalPipes(new ValidationPipe({ transform: true }));
         await app.init();
         app
             .getHttpAdapter()
@@ -20,12 +22,16 @@ describe('AppController (e2e)', () => {
             .ready();
     });
 
+    afterAll(async () => {
+        await app.close();
+    });
+
     const helloQuery = `
       query {
         hello
       }`;
 
-    it('fetch Pokemons', () => {
+    it('fetch', () => {
         return request(app.getHttpServer())
             .post('/graphql')
             .send({
@@ -37,4 +43,19 @@ describe('AppController (e2e)', () => {
             })
             .expect(200);
     });
+
+    it('hello 2', () => {
+        return request(app.getHttpServer())
+            .post('/graphql')
+            .send({
+                operationName: null,
+                query: helloQuery,
+            })
+            .expect(({body}) => {
+                expect(body.data.hello).toEqual('hello');
+            })
+            .expect(200);
+    });
+
+
 });

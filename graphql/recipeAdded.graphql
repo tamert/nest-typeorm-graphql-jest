@@ -1,0 +1,12 @@
+mutation {
+    addRecipe(newRecipeData: {
+        title: "limonata",
+        description: "açıklama açıklama açıklama açıklama",
+        ingredients:"limon"}
+    ) {
+        title
+        id
+        creationDate
+        ingredients
+    }
+}
