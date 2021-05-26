@@ -3,8 +3,9 @@ import * as request from 'supertest';
 import {AppModule} from '../src/app.module';
 import {FastifyAdapter} from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
+import { readFileSync } from 'fs';
 
-describe('AppController (e2e)', () => {
+describe('Recipes (e2e)', () => {
     let app;
 
     beforeEach(async () => {
@@ -26,36 +27,20 @@ describe('AppController (e2e)', () => {
         await app.close();
     });
 
-    const helloQuery = `
-      query {
-        hello
-      }`;
+    const mutationAdd = readFileSync(__dirname + '/../graphql/recipeAdded.graphql','utf8');
 
-    it('fetch', () => {
+    it('fetch all', () => {
         return request(app.getHttpServer())
             .post('/graphql')
             .send({
                 operationName: null,
-                query: helloQuery,
+                query: mutationAdd,
             })
             .expect(({body}) => {
-                expect(body.data.hello).toEqual('hello');
+                expect(body.data.addRecipe).toBeDefined();
             })
             .expect(200);
     });
 
-    it('hello 2', () => {
-        return request(app.getHttpServer())
-            .post('/graphql')
-            .send({
-                operationName: null,
-                query: helloQuery,
-            })
-            .expect(({body}) => {
-                expect(body.data.hello).toEqual('hello');
-            })
-            .expect(200);
-    });
-
-
+    
 });

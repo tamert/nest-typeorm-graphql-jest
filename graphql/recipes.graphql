@@ -1,0 +1,9 @@
+query {
+    recipes(take: 20, skip: 0) {
+        title
+        description
+        id
+        creationDate
+        ingredients
+    }
+}
