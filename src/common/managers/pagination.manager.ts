@@ -39,10 +39,19 @@ export class PaginatedArgs {
 
     @Field(type => Int)
     @Min(1)
-    @Max(50)
+    @Max(100)
     take = 25;
 
     @Field(type => String)
     search = "";
+
+    @Field(type => Int)
+    @Min(0)
+    page = 0;
+
+    @Field(type => Int)
+    @Min(1)
+    @Max(100)
+    limit = 25;
 
 }

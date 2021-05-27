@@ -1,9 +1,19 @@
 query {
-    recipes(take: 20, skip: 0) {
-        title
-        description
-        id
-        creationDate
-        ingredients
+    recipes(skip: 0, take: 10, search: "", page: 1, limit: 10) {
+        meta {
+            totalItems
+            currentPage
+            itemsPerPage
+        }
+        links {
+            first
+            last
+            next
+            previous
+        }
+        items {
+            id
+            title
+        }
     }
 }

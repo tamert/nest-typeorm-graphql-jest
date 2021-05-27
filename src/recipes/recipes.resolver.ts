@@ -3,10 +3,11 @@ import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
 import {RecipesArgs} from './dto/recipes.args';
-import {PaginatedRecipe} from './dto/recipes.object';
 import {Recipe} from './models/recipe.model';
 import {RecipesService} from './recipes.service';
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
+import {Links, Meta, PaginateRecipeResponse} from "./dto/paginate-response.dto";
+import {Pagination} from 'nestjs-typeorm-paginate';
 
 const pubSub = new PubSub();
 
@@ -26,9 +27,26 @@ export class RecipesResolver {
         return recipe;
     }
 
-    @Query(returns => [Recipe])
-    async recipes(@Args() recipesArgs: RecipesArgs): Promise<Recipe[]> {
-        return await this.recipesService.findAll(recipesArgs);
+    @Query(returns => PaginateRecipeResponse)
+    async recipes(@Args() options: RecipesArgs): Promise<PaginateRecipeResponse> {
+        const {items, links, meta} = await this.recipesService.paginate({
+            limit: options.limit,
+            page: options.page,
+            route: "/"
+        });
+        return new PaginateRecipeResponse(new Meta(
+             meta.totalItems,
+             meta.itemsPerPage,
+             meta.totalPages,
+             meta.currentPage
+        ), new Links(
+            links.first,
+            links.last,
+            links.next,
+            links.previous
+        ), items
+        );
+
     }
 
     @Mutation(returns => Recipe)

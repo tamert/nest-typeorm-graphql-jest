@@ -37,6 +37,7 @@
     "graphql-query-complexity": "0.8.1",
     "graphql-subscriptions": "1.2.1",
     "mysql2": "^2.2.5",
+    "nestjs-typeorm-paginate": "^2.5.1",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.7",
     "typeorm": "^0.2.32"
