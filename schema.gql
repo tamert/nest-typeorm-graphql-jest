@@ -13,6 +13,12 @@ type Recipe {
 """Date custom scalar type"""
 scalar Date
 
+type DeleteRecipeResponse {
+  data: Recipe!
+  status: String!
+  code: Float!
+}
+
 type Query {
   recipe(id: String!): Recipe!
   recipes(skip: Int = 0, take: Int = 25, search: String = ""): [Recipe!]!
@@ -21,7 +27,7 @@ type Query {
 
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
-  removeRecipe(id: String!): Boolean!
+  removeRecipe(id: String!): DeleteRecipeResponse!
 }
 
 input NewRecipeInput {

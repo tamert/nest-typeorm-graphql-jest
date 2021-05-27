@@ -1,0 +1,10 @@
+mutation {
+    removeRecipe(id: "11") {
+        data {
+            id
+            title
+        }
+        code
+        status
+    }
+}

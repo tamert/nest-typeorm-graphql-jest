@@ -6,6 +6,7 @@ import {RecipesArgs} from './dto/recipes.args';
 import {PaginatedRecipe} from './dto/recipes.object';
 import {Recipe} from './models/recipe.model';
 import {RecipesService} from './recipes.service';
+import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 
 const pubSub = new PubSub();
 
@@ -39,8 +40,8 @@ export class RecipesResolver {
         return recipe;
     }
 
-    @Mutation(returns => Boolean)
-    async removeRecipe(@Args('id') id: string) {
+    @Mutation(returns => DeleteRecipeResponse)
+    async removeRecipe(@Args('id') id: string): Promise<DeleteRecipeResponse> {
         return await this.recipesService.remove(id);
     }
 
