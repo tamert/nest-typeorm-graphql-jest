@@ -19,29 +19,22 @@ type DeleteRecipeResponse {
   code: Float!
 }
 
-type Meta {
-  totalItems: Float!
-  itemsPerPage: Float!
-  totalPages: Float!
-  currentPage: Float!
-}
-
-type Links {
-  first: String!
-  last: String!
-  next: String!
-  previous: String!
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPrevPage: Boolean!
 }
 
 type PaginateRecipeResponse {
+  currentPage: Float!
+  totalCount: Float!
+  totalPages: Float!
+  pageInfo: PageInfo!
   items: [Recipe!]
-  meta: Meta!
-  links: Links!
 }
 
 type Query {
   recipe(id: String!): Recipe!
-  recipes(skip: Int = 0, take: Int = 25, search: String = "", page: Int = 0, limit: Int = 25): PaginateRecipeResponse!
+  recipes(search: String = "", page: Int = 0, limit: Int = 25): PaginateRecipeResponse!
   hello: String!
 }
 

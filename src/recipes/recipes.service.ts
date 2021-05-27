@@ -1,6 +1,5 @@
 import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {NewRecipeInput} from './dto/new-recipe.input';
-import {RecipesArgs} from './dto/recipes.args';
 import {Recipe} from './models/recipe.model';
 import {RecipeRepository} from "./recipe.repository";
 import {Connection} from "typeorm/index";
@@ -30,7 +29,7 @@ export class RecipesService {
         return await this.recipeRepository.findOne(id);
     }
 
-    async findAll(recipesArgs: RecipesArgs): Promise<Recipe[]> {
+    async findAll(recipesArgs: { skip: 0, take: 10 }): Promise<Recipe[]> {
         return await this.recipeRepository.find(recipesArgs);
     }
 

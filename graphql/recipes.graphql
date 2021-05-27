@@ -1,19 +1,16 @@
 query {
-    recipes(skip: 0, take: 10, search: "", page: 1, limit: 10) {
-        meta {
-            totalItems
-            currentPage
-            itemsPerPage
-        }
-        links {
-            first
-            last
-            next
-            previous
+    recipes(page: 1, limit: 5) {
+        totalCount,
+        currentPage,
+        totalPages,
+        pageInfo {
+            hasNextPage
+            hasPrevPage
         }
         items {
             id
             title
+            creationDate
         }
     }
 }
