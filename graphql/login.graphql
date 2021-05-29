@@ -1,0 +1,10 @@
+query {
+    login(email: "admin@admin.com", password: "admin") {
+        accessToken
+        refreshToken
+        user {
+            id
+            email
+        }
+    }
+}

@@ -1,0 +1,8 @@
+mutation {
+    removeUser(id: "6") {
+        status
+        data {
+            id
+        }
+    }
+}

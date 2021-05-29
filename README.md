@@ -23,9 +23,10 @@ Code Challenge - NestJS + TypeORM + GraphQL + Jest
 - [x] Recipe can be deleted 
 - [x] Graphql can be testing
 - [x] Graphql Query must have pagination
-- [ ] User, Users can be listed
-- [ ] User can be logged (JWT Token) with username and password
-- [ ] Must have User Role
+- [x] User, Users can be listed
+- [x] User can be logged (JWT Token) with username and password
+- [ ] User have RefreshToken  
+- [ ] User have User Role
 - [ ] When create a new recipe, that should be kept whom (Recipe -> User Relations)
 - [ ] Add Swagger support
 - [ ] DataLoader integration

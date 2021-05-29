@@ -5,7 +5,8 @@ import {NewRecipeInput} from './dto/new-recipe.input';
 import {Recipe} from './models/recipe.model';
 import {RecipesService} from './recipes.service';
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
-import {PageInfo, PaginateRecipeResponse} from "./dto/paginate-response.dto";
+import {PaginateRecipeResponse} from "./dto/paginate-response.dto";
+import {PageInfo} from "../common/dto/page-info.response";
 import {PaginateInput} from "../common/dto/paginate.input";
 
 const pubSub = new PubSub();

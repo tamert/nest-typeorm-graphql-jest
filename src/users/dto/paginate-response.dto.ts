@@ -1,10 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import {Recipe} from "../models/recipe.model";
+import {User} from "../models/users.model";
 import {PageInfo} from "../../common/dto/page-info.response";
 
+
 @ObjectType()
-export class PaginateRecipeResponse {
-    constructor(currentPage: Number, totalCount: Number, totalPages: Number, pageInfo: PageInfo, items?: Recipe[]) {
+export class PaginateUserResponse {
+    constructor(currentPage: Number, totalCount: Number, totalPages: Number, pageInfo: PageInfo, items?: User[]) {
         this.totalCount = totalCount;
         this.currentPage = currentPage;
         this.totalPages = totalPages;
@@ -24,6 +25,6 @@ export class PaginateRecipeResponse {
     @Field()
     pageInfo: PageInfo
 
-    @Field((type) => [Recipe], {nullable: true})
-    items: Recipe[];
+    @Field((type) => [User], {nullable: true})
+    items: User[];
 }

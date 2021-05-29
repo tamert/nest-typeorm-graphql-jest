@@ -32,15 +32,51 @@ type PaginateRecipeResponse {
   items: [Recipe!]
 }
 
+type User {
+  id: ID!
+  email: String!
+  IsSuperUser: Boolean!
+  creationDate: Date!
+  authorizationCode: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+type DeleteUserResponse {
+  data: User!
+  status: String!
+  code: Float!
+}
+
+type PaginateUserResponse {
+  currentPage: Float!
+  totalCount: Float!
+  totalPages: Float!
+  pageInfo: PageInfo!
+  items: [User!]
+}
+
+type LoginResponse {
+  user: User!
+  accessToken: String!
+  refreshToken: String!
+}
+
 type Query {
   recipe(id: String!): Recipe!
   recipes(search: String = "", page: Int = 0, limit: Int = 25): PaginateRecipeResponse!
   hello: String!
+  user(id: String!): User!
+  users(search: String = "", page: Int = 0, limit: Int = 25): PaginateUserResponse!
+  login(password: String!, email: String!): LoginResponse!
 }
 
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
   removeRecipe(id: String!): DeleteRecipeResponse!
+  addUser(newUserData: NewUserInput!): User!
+  removeUser(id: String!): DeleteUserResponse!
 }
 
 input NewRecipeInput {
@@ -49,6 +85,14 @@ input NewRecipeInput {
   ingredients: [String!]!
 }
 
+input NewUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String
+}
+
 type Subscription {
   recipeAdded: Recipe!
+  userAdded: User!
 }

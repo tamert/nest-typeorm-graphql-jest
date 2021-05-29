@@ -3,11 +3,15 @@ import {GraphQLModule} from '@nestjs/graphql';
 import {RecipesModule} from './recipes/recipes.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import {UsersModule} from "./users/users.module";
+import {AuthModule} from "./auth/auth.module";
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
         RecipesModule,
+        UsersModule,
+        AuthModule,
         TypeOrmModule.forRoot({
             type: process.env.DB_TYPE as any,
             host: process.env.DB_HOST,

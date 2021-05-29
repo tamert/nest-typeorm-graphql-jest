@@ -1,0 +1,15 @@
+mutation {
+    addUser(newUserData: {
+        email: "admin@admin.com",
+        password: "admin",
+        firstName: "Tamer",
+        lastName: "Ağaoğlu"
+    }
+    ) {
+        id
+        email
+        firstName
+        lastName
+        creationDate
+    }
+}

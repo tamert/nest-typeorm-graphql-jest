@@ -46,17 +46,12 @@ export class RecipesService {
             await this.recipeRepository.delete(id)
             return new DeleteRecipeResponse(relatedRecipe, 'DELETED', 200)
         } catch (e) {
-            switch (e.status) {
-                case 401:
-                    throw new UnauthorizedException(e.message)
-                    break
-
-                case 404:
-                    throw new NotFoundException(e.message)
-
-                default:
-                    throw new BadRequestException(e.message)
-                    break
+            if (e.status === 401) {
+                throw new UnauthorizedException(e.message)
+            } else if (e.status === 404) {
+                throw new NotFoundException(e.message)
+            } else {
+                throw new BadRequestException(e.message)
             }
         }
     }
