@@ -40,7 +40,6 @@ type User {
   authorizationCode: String!
   firstName: String!
   lastName: String!
-  password: String!
 }
 
 type DeleteUserResponse {
@@ -60,7 +59,9 @@ type PaginateUserResponse {
 type LoginResponse {
   user: User!
   accessToken: String!
+  expiresIn: Date!
   refreshToken: String!
+  refreshTokenExpiresAt: Date!
 }
 
 type Query {

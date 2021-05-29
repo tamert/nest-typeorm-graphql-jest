@@ -1,5 +1,5 @@
 <h1 align="center">
-Code Challenge - NestJS + TypeORM + GraphQL + Jest
+Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 </h1>
 
 <p align="center">Simple GraphQL API with NestJS in Back-end. </p>

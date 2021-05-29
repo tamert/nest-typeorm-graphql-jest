@@ -1,4 +1,4 @@
-import {UnauthorizedException} from '@nestjs/common';
+import {NotFoundException} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {AuthService} from "./auth.service";
@@ -21,11 +21,9 @@ export class AuthResolver {
 
         const user = await this.authService.validateUser(email, password);
         if (!(user instanceof User)) {
-            throw new UnauthorizedException();
+            throw new NotFoundException();
         }
-        const tokens = await this.authService.token(user);
-        return new LoginResponse(user,tokens.accessToken,"");
-
+        return await this.authService.token(user);
     }
 
 }

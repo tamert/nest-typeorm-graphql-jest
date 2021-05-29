@@ -1,10 +1,14 @@
 query {
     login(email: "admin@admin.com", password: "admin") {
         accessToken
+        expiresIn
         refreshToken
+        refreshTokenExpiresAt
         user {
             id
             email
+            firstName
+            lastName
         }
     }
 }

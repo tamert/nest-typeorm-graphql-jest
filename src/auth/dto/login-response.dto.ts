@@ -4,10 +4,12 @@ import {User} from "../../users/models/users.model";
 
 @ObjectType()
 export class LoginResponse {
-    constructor(user: User, accessToken: string, refreshToken: string) {
+    constructor(user: User, accessToken: string, expiresIn: Date, refreshToken: string, refreshTokenExpiresAt: Date) {
         this.user = user
         this.accessToken = accessToken
+        this.expiresIn = expiresIn
         this.refreshToken = refreshToken
+        this.refreshTokenExpiresAt = refreshTokenExpiresAt
     }
 
     @Field()
@@ -17,5 +19,11 @@ export class LoginResponse {
     accessToken: string
 
     @Field()
+    expiresIn: Date
+
+    @Field()
     refreshToken: string
+
+    @Field()
+    refreshTokenExpiresAt: Date
 }
