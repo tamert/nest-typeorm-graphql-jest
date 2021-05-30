@@ -19,5 +19,13 @@ export class RefreshTokenService {
         return await this.refreshTokenRepository.createRefreshToken(data);
     }
 
+    async update(refresh: RefreshToken): Promise<RefreshToken> {
+        return await this.refreshTokenRepository.save(refresh);
+    }
+
+    async findOne(data: object): Promise<RefreshToken> {
+        return await this.refreshTokenRepository.findOne(data);
+    }
+
 }
 

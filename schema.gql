@@ -71,6 +71,7 @@ type Query {
   user(id: String!): User!
   users(search: String = "", page: Int = 0, limit: Int = 25): PaginateUserResponse!
   login(password: String!, email: String!): LoginResponse!
+  refreshToken(token: String!): LoginResponse!
 }
 
 type Mutation {

@@ -1,5 +1,5 @@
 query {
-    login(email: "admin@admin.com", password: "admin") {
+    login(email: "admin@admin.com", password:"admin" ) {
         accessToken
         expiresIn
         refreshToken

@@ -1,12 +1,8 @@
-import {NotFoundException} from '@nestjs/common';
-import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
-import {PubSub} from 'apollo-server-express';
+import {Args, Query, Resolver} from '@nestjs/graphql';
 import {AuthService} from "./auth.service";
 import {User} from "../users/models/users.model";
 import {LoginResponse} from "./dto/login-response.dto";
-
-const pubSub = new PubSub();
-
+import {unauthorized, refreshTokenExpiredSignature} from "../common/errors";
 
 @Resolver(of => User)
 export class AuthResolver {
@@ -21,9 +17,24 @@ export class AuthResolver {
 
         const user = await this.authService.validateUser(email, password);
         if (!(user instanceof User)) {
-            throw new NotFoundException();
+            unauthorized({raise: true});
         }
-        return await this.authService.token(user);
+        const refresh = await this.authService.createRefreshToken(user);
+        return await this.authService.token(user, refresh);
+    }
+
+    @Query(returns => LoginResponse)
+    async refreshToken(
+        @Args('token') token: string
+    ): Promise<LoginResponse> {
+
+        const refreshToken = await this.authService.validateRefreshToken(token);
+        if (!refreshToken) {
+            refreshTokenExpiredSignature({raise: true});
+        }
+        const update = await this.authService.updateRefreshToken(refreshToken);
+        const user = await this.authService.getUser(update.user);
+        return await this.authService.token(user, update);
     }
 
 }

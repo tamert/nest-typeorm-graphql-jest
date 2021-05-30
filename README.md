@@ -25,8 +25,8 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 - [x] Graphql Query must have pagination
 - [x] User, Users can be listed
 - [x] User can be logged (JWT Token) with username and password
-- [ ] User have RefreshToken  
-- [ ] User have User Role
+- [X] User have RefreshToken  
+- [ ] User have User Role (https://docs.nestjs.com/graphql/extensions)
 - [ ] When create a new recipe, that should be kept whom (Recipe -> User Relations)
 - [ ] Add Swagger support
 - [ ] DataLoader integration
