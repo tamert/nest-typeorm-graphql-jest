@@ -24,7 +24,7 @@ import {RefreshTokenModule} from "./refresh-token/refresh-token.module";
       })
     }),
   ],
-  providers: [AuthService, ConfigService, AuthResolver],
+  providers: [AuthService, ConfigService, JwtStrategy, AuthResolver],
   exports: [AuthService]
 })
 export class AuthModule {}

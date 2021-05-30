@@ -1,4 +1,4 @@
-import {NotFoundException} from '@nestjs/common';
+import {NotFoundException, UseGuards} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
@@ -8,6 +8,7 @@ import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {PaginateRecipeResponse} from "./dto/paginate-response.dto";
 import {PageInfo} from "../common/dto/page-info.response";
 import {PaginateInput} from "../common/dto/paginate.input";
+import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 
 const pubSub = new PubSub();
 
@@ -28,6 +29,7 @@ export class RecipesResolver {
     }
 
     @Query(returns => PaginateRecipeResponse)
+    @UseGuards(JwtAuthGuard)
     async recipes(@Args() options: PaginateInput): Promise<PaginateRecipeResponse> {
         const {items, links, meta} = await this.recipesService.paginate({
             limit: options.limit,
