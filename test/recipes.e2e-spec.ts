@@ -28,7 +28,7 @@ describe('Recipes (e2e)', () => {
         await app.close();
     });
 
-    const queryList = readFileSync(__dirname + '/../graphql/recipes.graphql','utf8');
+    const queryList = readFileSync(__dirname + '/../graphql/users.graphql','utf8');
 
     it('fetch all', () => {
         return request(app.getHttpServer())
@@ -38,7 +38,8 @@ describe('Recipes (e2e)', () => {
                 query: queryList,
             })
             .expect(({body}) => {
-                expect(body.data.recipes).toBeDefined();
+                console.log(body.data)
+                expect(body.data).toBeDefined();
             })
             .expect(200);
     });

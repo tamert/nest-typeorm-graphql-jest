@@ -37,9 +37,6 @@ type User {
   email: String!
   IsSuperUser: Boolean!
   creationDate: Date!
-  authorizationCode: String!
-  firstName: String!
-  lastName: String!
 }
 
 type DeleteUserResponse {

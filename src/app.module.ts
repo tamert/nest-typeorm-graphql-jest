@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 import {GraphQLModule} from '@nestjs/graphql';
 import {RecipesModule} from './recipes/recipes.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
 import {AuthModule} from "./auth/auth.module";
 

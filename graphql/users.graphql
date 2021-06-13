@@ -1,5 +1,5 @@
-query($page: Int!, $limit: Int!) {
-    recipes(page: $page, limit: $limit) {
+query {
+    users(page: 1, limit: 5)  {
         totalCount,
         currentPage,
         totalPages,
@@ -9,8 +9,7 @@ query($page: Int!, $limit: Int!) {
         }
         items {
             id
-            title
-            creationDate
+            email
         }
     }
 }
