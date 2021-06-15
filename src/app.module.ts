@@ -5,6 +5,9 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
 import {AuthModule} from "./auth/auth.module";
+import {UpperCaseDirective} from "./common/directives/upper-case.directive";
+import {doc} from "prettier";
+import join = doc.builders.join;
 
 @Module({
     imports: [
@@ -27,7 +30,17 @@ import {AuthModule} from "./auth/auth.module";
         }),
         GraphQLModule.forRoot({
             installSubscriptionHandlers: true,
-            autoSchemaFile: 'schema.gql',
+            schemaDirectives: {
+                upper: UpperCaseDirective,
+            },
+            typePaths: ['./src/common/graphql.global.graphql'],
+            autoSchemaFile: './src/common/graphql.schema.graphql',
+            sortSchema: true,
+            tracing: true,
+            definitions: {
+                path:'./src/common/graphql.definitions.ts',
+                outputAs: 'class',
+            },
             context: ({req}) => ({...req}),
         }),
     ],

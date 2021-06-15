@@ -17,13 +17,16 @@ export class User {
     })
     @Index({unique: true})
     @IsString()
+    @HideField()
     @MinLength(32)
     public authorizationCode: string;
 
     @Column({length: 100})
+    @Field()
     public firstName: string;
 
     @Column({length: 100})
+    @Field()
     public lastName: string;
 
     @Field()
@@ -32,7 +35,7 @@ export class User {
     @IsEmail()
     public email: string;
 
-    @Field()
+    @HideField()
     @Column('boolean', {default: () => 'false'})
     @IsBoolean()
     public IsSuperUser: boolean;

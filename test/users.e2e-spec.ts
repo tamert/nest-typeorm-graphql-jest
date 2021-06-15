@@ -6,7 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { readFileSync } from 'fs';
 
 
-describe('Recipes (e2e)', () => {
+describe('Users (e2e)', () => {
     let app;
 
     beforeEach(async () => {
@@ -38,7 +38,6 @@ describe('Recipes (e2e)', () => {
                 query: queryList,
             })
             .expect(({body}) => {
-                console.log(body.data)
                 expect(body.data).toBeDefined();
             })
             .expect(200);

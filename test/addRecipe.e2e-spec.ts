@@ -2,8 +2,8 @@ import {Test, TestingModule} from '@nestjs/testing';
 import * as request from 'supertest';
 import {AppModule} from '../src/app.module';
 import {FastifyAdapter} from '@nestjs/platform-fastify';
-import { ValidationPipe } from '@nestjs/common';
-import { readFileSync } from 'fs';
+import {ValidationPipe} from '@nestjs/common';
+import {readFileSync} from 'fs';
 
 describe('Recipes (e2e)', () => {
     let app;
@@ -15,10 +15,9 @@ describe('Recipes (e2e)', () => {
 
         app = moduleFixture.createNestApplication(new FastifyAdapter());
 
-        app.useGlobalPipes(new ValidationPipe({ transform: true }));
+        app.useGlobalPipes(new ValidationPipe({transform: true}));
         await app.init();
-        app
-            .getHttpAdapter()
+        app.getHttpAdapter()
             .getInstance()
             .ready();
     });
@@ -27,7 +26,7 @@ describe('Recipes (e2e)', () => {
         await app.close();
     });
 
-    const mutationAdd = readFileSync(__dirname + '/../graphql/recipeAdded.graphql','utf8');
+    const mutationAdd = readFileSync(__dirname + '/../graphql/recipeAdded.graphql', 'utf8');
 
     it('fetch all', () => {
         return request(app.getHttpServer())
@@ -38,9 +37,41 @@ describe('Recipes (e2e)', () => {
             })
             .expect(({body}) => {
                 expect(body.data.addRecipe).toBeDefined();
+                request(app.getHttpServer())
+                    .post('/graphql')
+                    .send({
+                        operationName: null,
+                        query: 'query {\n' +
+                            '    recipe(id: "'+body.data.addRecipe.id+'") {\n' +
+                            '            id\n' +
+                            '            title\n' +
+                            '            creationDate\n' +
+                            '    }\n' +
+                            '}',
+                    })
+                    .expect(({body}) => {
+                        expect(body.data.recipe).toBeDefined();
+                        request(app.getHttpServer())
+                            .post('/graphql')
+                            .send({
+                                operationName: null,
+                                query: 'mutation {\n' +
+                                    '    removeUser(id: "'+body.data.addRecipe.id+'") {\n' +
+                                    '        status\n' +
+                                    '        data {\n' +
+                                    '            id\n' +
+                                    '        }\n' +
+                                    '    }\n' +
+                                    '}',
+                            })
+                            .expect(({body}) => {
+                                expect(body.data.removeUser).toBeDefined();
+                                expect(body.data.removeUser.status).toEqual(true);
+                            }).expect(200)
+                    }).expect(200)
             })
             .expect(200);
     });
 
-    
+
 });

@@ -1,5 +1,5 @@
 import {NotFoundException, UseGuards} from '@nestjs/common';
-import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
+import {Args, Mutation, Query, Resolver, Subscription, Directive} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
 import {Recipe} from './models/recipe.model';
@@ -18,6 +18,7 @@ export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {
     }
 
+    @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(returns => Recipe)
     async recipe(@Args('id') id: string): Promise<Recipe> {
         const recipe = await this.recipesService.findOneById(id);

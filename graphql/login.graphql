@@ -7,8 +7,6 @@ query {
         user {
             id
             email
-            firstName
-            lastName
             creationDate
         }
     }

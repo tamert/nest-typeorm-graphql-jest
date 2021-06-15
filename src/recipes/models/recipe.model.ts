@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import {Directive, Field, ID, ObjectType} from '@nestjs/graphql';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, } from 'typeorm';
 
 @Entity()
@@ -9,6 +9,7 @@ export class Recipe {
   id: number;
 
   @Field()
+  @Directive('@upper')
   @Column({length: 255 })
   title: string;
 
