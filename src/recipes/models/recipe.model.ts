@@ -1,5 +1,7 @@
-import {Directive, Field, ID, ObjectType} from '@nestjs/graphql';
+import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, } from 'typeorm';
+import {checkRoleMiddleware} from "../../common/middlewares/checkRole.middleware";
+
 
 @Entity()
 @ObjectType()
@@ -8,7 +10,8 @@ export class Recipe {
   @Field(type => ID)
   id: number;
 
-  @Field()
+  @Field({ middleware: [checkRoleMiddleware] })
+  @Extensions({ role: ["admin"] })
   @Directive('@upper')
   @Column({length: 255 })
   title: string;
@@ -16,6 +19,7 @@ export class Recipe {
   @Field({ nullable: true })
   @Column({length: 255 })
   description?: string;
+
 
   @Field()
   @CreateDateColumn()

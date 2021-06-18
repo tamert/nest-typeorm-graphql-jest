@@ -2,7 +2,7 @@ query($id: String!) {
     recipe(id: $id) {
             id
             title
-            upperTitle: title @upper
+            description
             creationDate
     }
 }

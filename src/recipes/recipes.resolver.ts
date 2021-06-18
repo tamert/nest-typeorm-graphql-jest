@@ -17,10 +17,11 @@ const pubSub = new PubSub();
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {
     }
-
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(returns => Recipe)
+    @UseGuards(JwtAuthGuard)
     async recipe(@Args('id') id: string): Promise<Recipe> {
+
         const recipe = await this.recipesService.findOneById(id);
         if (!recipe) {
             throw new NotFoundException(id);
