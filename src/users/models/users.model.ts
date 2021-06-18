@@ -1,13 +1,18 @@
 import {Field, ID, ObjectType, HideField} from '@nestjs/graphql';
-import {Column, Entity, Index, OneToMany, CreateDateColumn, PrimaryGeneratedColumn} from 'typeorm';
 import {IsBoolean, IsEmail, IsEmpty, IsString, MinLength} from 'class-validator';
 import {RefreshToken} from "../../auth/refresh-token/models/refresh-token.model";
-
+import {
+    Column,
+    Entity,
+    Index,
+    OneToMany,
+    CreateDateColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class User {
-
     @PrimaryGeneratedColumn()
     @Field(type => ID)
     id: number;
@@ -29,6 +34,10 @@ export class User {
     @Field()
     public lastName: string;
 
+    @Field(type => [String])
+    @Column("simple-json")
+    roles: string[];
+
     @Field()
     @Column()
     @Index({unique: true})
@@ -38,7 +47,7 @@ export class User {
     @HideField()
     @Column('boolean', {default: () => 'false'})
     @IsBoolean()
-    public IsSuperUser: boolean;
+    public isSuperUser: boolean;
 
     @HideField()
     @Column()
@@ -55,7 +64,8 @@ export class User {
             email: this.email,
             firstName: this.firstName,
             lastName: this.lastName,
-            IsSuperUser: this.IsSuperUser,
+            isSuperUser: this.isSuperUser,
+            roles: this.roles,
             creationDate: this.creationDate,
         };
     }

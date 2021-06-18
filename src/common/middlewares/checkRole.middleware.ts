@@ -1,6 +1,8 @@
 import {FieldMiddleware, MiddlewareContext, NextFn} from "@nestjs/graphql";
 import {Role} from "../../auth/enums";
 import {ForbiddenException, UnauthorizedException} from "@nestjs/common";
+import {User} from "../../users/models/users.model";
+
 
 
 export const checkRoleMiddleware: FieldMiddleware = async (
@@ -9,21 +11,19 @@ export const checkRoleMiddleware: FieldMiddleware = async (
 ) => {
     const {info, context} = await ctx;
 
-    console.log(typeof (context));
+    const auth = (<any>context).req.user ?? false;
 
-    // @ts-ignore
-    const user = context.req.user ?? "false";
-
-    console.log(user);
-
-    if (!user) {
+    if (!auth) {
         throw new UnauthorizedException();
     }
 
     const {extensions} = info.parentType.getFields()[info.fieldName];
-    const userRole = Role.USER;
 
-    if (!user.IsSuperUser && userRole !== extensions.role) {
+    /**
+     * @todo Check if data was updated in database
+     */
+
+    if (!auth.isSuperUser && extensions.role.filter(element => auth.roles.includes(element)).length === 0) {
         throw new ForbiddenException(
             `User does not have sufficient permissions to access "${info.fieldName}" field.`,
         );

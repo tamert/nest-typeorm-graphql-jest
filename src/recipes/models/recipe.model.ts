@@ -10,8 +10,8 @@ export class Recipe {
   @Field(type => ID)
   id: number;
 
-  @Field({ middleware: [checkRoleMiddleware] })
-  @Extensions({ role: ["admin"] })
+
+  @Field()
   @Directive('@upper')
   @Column({length: 255 })
   title: string;
@@ -21,7 +21,8 @@ export class Recipe {
   description?: string;
 
 
-  @Field()
+  @Field({ middleware: [checkRoleMiddleware] })
+  @Extensions({ role: ["ROLE_USER", "ROLE_ADMIN"] })
   @CreateDateColumn()
   creationDate: Date;
 
