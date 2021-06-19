@@ -6,7 +6,6 @@ mutation {
     ) {
         title
         id
-        creationDate
         ingredients
     }
 }

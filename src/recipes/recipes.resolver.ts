@@ -8,7 +8,7 @@ import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {PaginateRecipeResponse} from "./dto/paginate-response.dto";
 import {PageInfo} from "../common/dto/page-info.response";
 import {PaginateInput} from "../common/dto/paginate.input";
-import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
 
 const pubSub = new PubSub();
 
@@ -20,6 +20,7 @@ export class RecipesResolver {
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(returns => Recipe)
     @UseGuards(JwtAuthGuard)
+    @Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
 
         const recipe = await this.recipesService.findOneById(id);

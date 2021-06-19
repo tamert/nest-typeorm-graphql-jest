@@ -45,7 +45,6 @@ describe('Recipes (e2e)', () => {
                             '    recipe(id: "'+body.data.addRecipe.id+'") {\n' +
                             '            id\n' +
                             '            title\n' +
-                            '            creationDate\n' +
                             '    }\n' +
                             '}',
                     })
