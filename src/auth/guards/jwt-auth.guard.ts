@@ -36,7 +36,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     handleRequest(err, user, info) {
         if (user) {
             user = this.userService.findOne(user.id);
-        } else if (this.scopes.indexOf("required") !== -1 && !user) {
+        } else if ((this.scopes && this.scopes.indexOf("required") !== -1) && !user) {
             throw new UnauthorizedException();
         } else if (err) {
             throw err;

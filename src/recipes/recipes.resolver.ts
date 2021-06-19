@@ -20,7 +20,7 @@ export class RecipesResolver {
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(returns => Recipe)
     @UseGuards(JwtAuthGuard)
-    @Scopes('required')
+    //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
 
         const recipe = await this.recipesService.findOneById(id);
@@ -33,6 +33,7 @@ export class RecipesResolver {
 
     @Query(returns => PaginateRecipeResponse)
     @UseGuards(JwtAuthGuard)
+    //@Scopes('required')
     async recipes(@Args() options: PaginateInput): Promise<PaginateRecipeResponse> {
         const {items, links, meta} = await this.recipesService.paginate({
             limit: options.limit,
