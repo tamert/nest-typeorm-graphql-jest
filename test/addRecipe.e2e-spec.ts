@@ -26,7 +26,7 @@ describe('Recipes (e2e)', () => {
         await app.close();
     });
 
-    const mutationAdd = readFileSync(__dirname + '/../graphql/recipeAdded.graphql', 'utf8');
+    const mutationAdd = readFileSync(__dirname + '/../graphql/mutation/recipeAdded.graphql', 'utf8');
 
     it('fetch all', () => {
         return request(app.getHttpServer())
