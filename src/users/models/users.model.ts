@@ -1,6 +1,5 @@
 import {Field, ID, ObjectType, HideField} from '@nestjs/graphql';
 import {IsBoolean, IsEmail, IsEmpty, IsString, MinLength} from 'class-validator';
-import { v4 as uuid } from 'uuid';
 import {RefreshToken} from "../../auth/refresh-token/models/refresh-token.model";
 import {
     Column,
@@ -8,7 +7,6 @@ import {
     Index,
     OneToMany,
     CreateDateColumn,
-    BeforeInsert,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -37,7 +35,7 @@ export class User {
     public lastName: string;
 
     @Field(type => [String])
-    @Column("simple-json")
+    @Column("simple-json",  { default: () => null })
     roles: string[];
 
     @Field()
@@ -62,9 +60,6 @@ export class User {
 
     @Column({ nullable: true })
     salt: string;
-    @BeforeInsert()  async generateSalt() {
-        this.salt = await uuid();
-    }
 
 
     public jwtPayload() {
