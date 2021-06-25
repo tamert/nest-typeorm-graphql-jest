@@ -5,6 +5,9 @@ import {FastifyAdapter} from '@nestjs/platform-fastify';
 import {ValidationPipe} from '@nestjs/common';
 import {readFileSync} from 'fs';
 
+/**
+ * todo: can using token ("auth") for refresh token generated access token clickup task id #n3apzy
+ */
 describe('Recipes (e2e)', () => {
     let app;
 

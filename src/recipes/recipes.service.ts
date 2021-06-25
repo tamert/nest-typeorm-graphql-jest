@@ -45,7 +45,7 @@ export class RecipesService {
 
         try {
             const relatedRecipe = await this.recipeRepository.findOneOrFail(id)
-            await this.recipeRepository.delete(id)
+            await this.recipeRepository.softDelete(id)
             return new DeleteRecipeResponse(relatedRecipe, 'DELETED', 200)
         } catch (e) {
             if (e.status === 401) {

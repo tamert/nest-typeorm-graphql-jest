@@ -53,6 +53,8 @@ export class RecipesResolver {
     }
 
     @Mutation(returns => Recipe)
+    @UseGuards(JwtAuthGuard)
+    //@Scopes('required')
     async addRecipe(
         @Args('newRecipeData') newRecipeData: NewRecipeInput,
     ): Promise<Recipe> {
@@ -61,6 +63,8 @@ export class RecipesResolver {
         return recipe;
     }
 
+    @UseGuards(JwtAuthGuard)
+    //@Scopes('required')
     @Mutation(returns => DeleteRecipeResponse)
     async removeRecipe(@Args('id') id: string): Promise<DeleteRecipeResponse> {
         return await this.recipesService.remove(id);
