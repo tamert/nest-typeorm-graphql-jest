@@ -1,4 +1,4 @@
-import {NotFoundException} from '@nestjs/common';
+import {NotFoundException, UseGuards} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewUserInput} from './dto/new-user.input';
@@ -8,6 +8,8 @@ import {DeleteUserResponse} from "./dto/delete-response.dto";
 import {PaginateUserResponse} from "./dto/paginate-response.dto";
 import {PageInfo} from "../common/dto/page-info.response";
 import {PaginateInput} from "../common/dto/paginate.input";
+import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
+import {CurrentUser} from "../auth/decorators/current-user.decorator";
 
 const pubSub = new PubSub();
 
@@ -23,6 +25,14 @@ export class UsersResolver {
         if (!user) {
             throw new NotFoundException(id);
         }
+        await pubSub.publish('user', {user: user});
+        return user;
+    }
+
+    @Query(returns => User)
+    @UseGuards(JwtAuthGuard)
+    @Scopes('required')
+    async currentUser(@CurrentUser() user: User): Promise<User> {
         await pubSub.publish('user', {user: user});
         return user;
     }

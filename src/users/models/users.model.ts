@@ -17,15 +17,6 @@ export class User {
     @Field(type => ID)
     id: number;
 
-    @Column({
-        nullable: true,
-    })
-    @Index({unique: true})
-    @IsString()
-    @HideField()
-    @MinLength(32)
-    public authorizationCode: string;
-
     @Column({length: 100})
     @Field()
     public firstName: string;
@@ -58,6 +49,7 @@ export class User {
     @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, {onDelete: 'CASCADE'})
     public refreshTokens: RefreshToken[];
 
+    @HideField()
     @Column({ nullable: true })
     salt: string;
 
