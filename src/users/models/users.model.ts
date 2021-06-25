@@ -1,5 +1,6 @@
 import {Field, ID, ObjectType, HideField} from '@nestjs/graphql';
 import {IsBoolean, IsEmail, IsEmpty, IsString, MinLength} from 'class-validator';
+import { v4 as uuid } from 'uuid';
 import {RefreshToken} from "../../auth/refresh-token/models/refresh-token.model";
 import {
     Column,
@@ -7,6 +8,7 @@ import {
     Index,
     OneToMany,
     CreateDateColumn,
+    BeforeInsert,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -58,15 +60,16 @@ export class User {
     @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, {onDelete: 'CASCADE'})
     public refreshTokens: RefreshToken[];
 
+    @Column({ nullable: true })
+    salt: string;
+    @BeforeInsert()  async generateSalt() {
+        this.salt = await uuid();
+    }
+
+
     public jwtPayload() {
         return {
-            id: this.id,
-            email: this.email,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            isSuperUser: this.isSuperUser,
-            roles: this.roles,
-            creationDate: this.creationDate,
+            salt: this.salt
         };
     }
 

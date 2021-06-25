@@ -35,7 +35,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     handleRequest(err, user, info) {
         if (user) {
-            user = this.userService.findOne(user.id);
+            user = this.userService.findOne({salt: user.salt });
+            /**
+             * @todo added permission using scope clickup id #n3aq4c
+             */
         } else if ((this.scopes && this.scopes.indexOf("required") !== -1) && !user) {
             throw new UnauthorizedException();
         } else if (err) {

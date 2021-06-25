@@ -1,6 +1,6 @@
 import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn} from 'typeorm';
-import {checkRoleMiddleware} from "../../common/middlewares/checkRole.middleware";
+import {fieldPermissionMiddleware} from "../../auth/middlewares/fieldPermission.middleware";
 
 
 @Entity()
@@ -20,7 +20,7 @@ export class Recipe {
     description?: string;
 
 
-    @Field({middleware: [checkRoleMiddleware]})
+    @Field({middleware: [fieldPermissionMiddleware]})
     @Extensions({role: ["ROLE_USER", "ROLE_ADMIN"]})
     @CreateDateColumn()
     creationDate: Date;
