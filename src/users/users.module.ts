@@ -7,9 +7,11 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "./models/users.model";
 import {AuthModule} from "../auth/auth.module";
 import {UsersSubscriber} from "./users.subscriber";
+import {PermissionModule} from "./permission/permission.module";
 
 @Module({
     imports: [
+        PermissionModule,
         AuthModule,
         TypeOrmModule.forFeature([
             User,

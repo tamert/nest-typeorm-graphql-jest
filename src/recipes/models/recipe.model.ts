@@ -1,6 +1,6 @@
 import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn} from 'typeorm';
-import {fieldPermissionMiddleware} from "../../auth/middlewares/fieldPermission.middleware";
+import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
 
 
 @Entity()
