@@ -1,7 +1,7 @@
-import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn} from 'typeorm';
+import {Directive, Field, Extensions, ID, ObjectType, HideField} from '@nestjs/graphql';
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToMany} from 'typeorm';
 import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
-
+import {RecipeTranslation} from "./recipe-translation.model";
 
 @Entity()
 @ObjectType()
@@ -19,7 +19,6 @@ export class Recipe {
     @Column({length: 255})
     description?: string;
 
-
     @Field({middleware: [fieldPermissionMiddleware]})
     @Extensions({role: ["ROLE_USER", "ROLE_ADMIN"]})
     @CreateDateColumn()
@@ -31,4 +30,9 @@ export class Recipe {
     @Field(type => [String])
     @Column("simple-json")
     ingredients: string[];
+
+    @Field(type => [RecipeTranslation])
+    @OneToMany(type => RecipeTranslation, translation => translation.base,  { cascade: true })
+    translations!: RecipeTranslation[];
+
 }
