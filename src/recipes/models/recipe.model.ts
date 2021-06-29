@@ -3,6 +3,17 @@ import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColu
 import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
 import {RecipeTranslation} from "./recipe-translation.model";
 
+
+import { FieldMiddleware, MiddlewareContext, NextFn } from '@nestjs/graphql';
+
+const currentLocaleMiddleware: FieldMiddleware = async (
+    ctx: MiddlewareContext,
+    next: NextFn,
+) => {
+    const value = await next();
+    return ctx.source.translations.find((element => element.locale == (<any>ctx.context).req.headers.locale));
+};
+
 @Entity()
 @ObjectType()
 export class Recipe {
@@ -31,8 +42,11 @@ export class Recipe {
     @Column("simple-json")
     ingredients: string[];
 
-    @Field(type => [RecipeTranslation])
-    @OneToMany(type => RecipeTranslation, translation => translation.base,  { cascade: true })
+    @Field(type => [RecipeTranslation], {nullable: true})
+    @OneToMany(type => RecipeTranslation, translation => translation.base, {cascade: true, eager: true})
     translations!: RecipeTranslation[];
+
+    @Field(type => RecipeTranslation, {middleware: [currentLocaleMiddleware], nullable: true})
+    translate?: RecipeTranslation;
 
 }

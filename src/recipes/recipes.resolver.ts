@@ -34,12 +34,16 @@ export class RecipesResolver {
     @Query(returns => PaginateRecipeResponse)
     @UseGuards(JwtAuthGuard)
     //@Scopes('required')
+    /**
+     * todo: decarator transformer interceptor
+     */
     async recipes(@Args() options: PaginateInput): Promise<PaginateRecipeResponse> {
         const {items, links, meta} = await this.recipesService.paginate({
             limit: options.limit,
             page: options.page,
             route: "/"
         });
+
         return new PaginateRecipeResponse(
             meta.currentPage,
             meta.totalItems,

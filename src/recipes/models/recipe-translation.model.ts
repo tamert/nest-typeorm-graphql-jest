@@ -18,7 +18,6 @@ export class RecipeTranslation {
     @Column() description: string;
 
     @Field(type => Recipe)
-    @ManyToOne(type => Recipe, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'translateId' })
+    @ManyToOne(type => Recipe, recipe => recipe.translations, { onDelete: 'CASCADE' })
     public base: Recipe;
 }
