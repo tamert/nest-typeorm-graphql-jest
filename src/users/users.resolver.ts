@@ -5,8 +5,7 @@ import {NewUserInput} from './dto/new-user.input';
 import {User} from './models/users.model';
 import {UsersService} from './users.service';
 import {DeleteUserResponse} from "./dto/delete-response.dto";
-import {PaginateUserResponse} from "./dto/paginate-response.dto";
-import {PageInfo} from "../common/dto/page-info.response";
+import {PaginatedUser} from "./dto/paginate-response.dto";
 import {PaginateInput} from "../common/dto/paginate.input";
 import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
 import {CurrentUser} from "../auth/decorators/current-user.decorator";
@@ -37,23 +36,13 @@ export class UsersResolver {
         return user;
     }
 
-    @Query(returns => PaginateUserResponse)
-    async users(@Args() options: PaginateInput): Promise<PaginateUserResponse> {
-        const {items, links, meta} = await this.usersService.paginate({
+    @Query(returns => PaginatedUser)
+    async users(@Args() options: PaginateInput): Promise<PaginatedUser> {
+        return await this.usersService.paginate({
             limit: options.limit,
             page: options.page,
             route: "/"
         });
-        return new PaginateUserResponse(
-            meta.currentPage,
-            meta.totalItems,
-            meta.totalPages
-            , new PageInfo(
-                links.next,
-                links.previous
-            ), items
-        );
-
     }
 
     @Mutation(returns => User)

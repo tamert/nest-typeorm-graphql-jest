@@ -7,7 +7,7 @@ query {
             hasNextPage
             hasPrevPage
         }
-        items {
+        nodes {
             id
             email
         }

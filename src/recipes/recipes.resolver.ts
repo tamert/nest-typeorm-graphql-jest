@@ -1,12 +1,11 @@
 import {NotFoundException, UseGuards} from '@nestjs/common';
-import {Args, Mutation, Query, Resolver, Subscription, Directive} from '@nestjs/graphql';
+import {Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
 import {Recipe} from './models/recipe.model';
 import {RecipesService} from './recipes.service';
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
-import {PaginateRecipeResponse} from "./dto/paginate-response.dto";
-import {PageInfo} from "../common/dto/page-info.response";
+import {PaginatedRecipes} from "./dto/paginate-response.dto";
 import {PaginateInput} from "../common/dto/paginate.input";
 import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
 
@@ -17,8 +16,9 @@ const pubSub = new PubSub();
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {
     }
+
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
-    @Query(returns => Recipe)
+    @Query(() => Recipe)
     @UseGuards(JwtAuthGuard)
     //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
@@ -31,32 +31,18 @@ export class RecipesResolver {
         return recipe;
     }
 
-    @Query(returns => PaginateRecipeResponse)
+    @Query(() => PaginatedRecipes)
     @UseGuards(JwtAuthGuard)
     //@Scopes('required')
-    /**
-     * todo: decarator transformer interceptor
-     */
-    async recipes(@Args() options: PaginateInput): Promise<PaginateRecipeResponse> {
-        const {items, links, meta} = await this.recipesService.paginate({
+    async recipes(@Args() options: PaginateInput): Promise<PaginatedRecipes> {
+        return await this.recipesService.paginate({
             limit: options.limit,
             page: options.page,
             route: "/"
         });
-
-        return new PaginateRecipeResponse(
-            meta.currentPage,
-            meta.totalItems,
-            meta.totalPages
-            , new PageInfo(
-                links.next,
-                links.previous
-            ), items
-        );
-
     }
 
-    @Mutation(returns => Recipe)
+    @Mutation(() => Recipe)
     @UseGuards(JwtAuthGuard)
     //@Scopes('required')
     async addRecipe(
@@ -69,7 +55,7 @@ export class RecipesResolver {
 
     @UseGuards(JwtAuthGuard)
     //@Scopes('required')
-    @Mutation(returns => DeleteRecipeResponse)
+    @Mutation(() => DeleteRecipeResponse)
     async removeRecipe(@Args('id') id: string): Promise<DeleteRecipeResponse> {
         return await this.recipesService.remove(id);
     }
@@ -79,7 +65,7 @@ export class RecipesResolver {
         return 'hello';
     }
 
-    @Subscription(returns => Recipe)
+    @Subscription(() => Recipe)
     recipeAdded() {
         return pubSub.asyncIterator('recipeAdded');
     }

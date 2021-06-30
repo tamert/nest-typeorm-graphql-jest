@@ -7,10 +7,7 @@ query($id: String!) {
             name,
             locale
         },
-        translate @skip(if: false) {
-            name
-        },
-        ingilizce: translate {
+        translate {
             name
         }
     }

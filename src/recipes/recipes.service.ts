@@ -6,10 +6,9 @@ import {Connection} from "typeorm/index";
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {
     paginate,
-    Pagination,
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-
+import {IPaginated, PageInfo} from "../common/dto/paginate-response.dto";
 @Injectable()
 export class RecipesService {
 
@@ -33,12 +32,20 @@ export class RecipesService {
         return await this.recipeRepository.find(recipesArgs);
     }
 
-    async paginate(options: IPaginationOptions): Promise<Pagination<Recipe>> {
+    async paginate(options: IPaginationOptions): Promise<IPaginated<Recipe>> {
         const queryBuilder = this.recipeRepository.createQueryBuilder('c');
         queryBuilder.orderBy('c.id', 'DESC'); // Or whatever you need to do
-
-
-        return paginate<Recipe>(queryBuilder, options);
+        const {items, links, meta} = await paginate<Recipe>(queryBuilder, options);
+        return {
+            currentPage:  meta.currentPage,
+            totalCount:  meta.totalItems,
+            totalPages: meta.totalPages,
+            nodes: items,
+            pageInfo: new PageInfo(
+                links.next,
+                links.previous
+            )
+        };
     }
 
     async remove(id: string): Promise<DeleteRecipeResponse> {
