@@ -21,6 +21,7 @@ export class RecipesService {
     }
 
     async create(data: NewRecipeInput): Promise<Recipe> {
+        console.log(data);
         return await this.recipeRepository.createRecipe(data);
     }
 

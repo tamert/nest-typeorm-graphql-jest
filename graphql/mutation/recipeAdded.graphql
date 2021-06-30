@@ -5,10 +5,12 @@ mutation {
             description: "limonata nasıl yapılır gelin beraber inceleyelim.",
             ingredients: ["limon","şeker","su"],
             translations: [{
-                name: "asdasdasda",
+                name: "bbbbbbbbbbbbbb",
                 description: "teasdsadadasdadasdast",
                 locale: "en"
-            }, {locale: "tr", name: "testa", description: "sadada"}]
+            }, {
+                locale: "tr", name: "aaaaaaaaaaa", description: "sadada"
+            }]
         }
     ) {
         title

@@ -4,7 +4,7 @@ import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fiel
 import {RecipeTranslation} from "./recipe-translation.model";
 
 
-import { FieldMiddleware, MiddlewareContext, NextFn } from '@nestjs/graphql';
+import {FieldMiddleware, MiddlewareContext, NextFn} from '@nestjs/graphql';
 
 const currentLocaleMiddleware: FieldMiddleware = async (
     ctx: MiddlewareContext,
