@@ -6,6 +6,13 @@ import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
 import {AuthModule} from "./auth/auth.module";
 import {UpperCaseDirective} from "./common/directives/upper-case.directive";
+import {DateFormatDirective} from "./common/directives/date-format.directive";
+import {GraphQLSchema} from 'graphql';
+import { mergeSchemas } from '@graphql-tools/merge';
+const schemaDirectives = {
+    upper: UpperCaseDirective,
+    date: DateFormatDirective
+};
 
 @Module({
     imports: [
@@ -30,6 +37,7 @@ import {UpperCaseDirective} from "./common/directives/upper-case.directive";
             installSubscriptionHandlers: true,
             schemaDirectives: {
                 upper: UpperCaseDirective,
+                date: DateFormatDirective,
             },
             typePaths: ['./src/common/graphql.global.graphql'],
             autoSchemaFile: './schema.gql',

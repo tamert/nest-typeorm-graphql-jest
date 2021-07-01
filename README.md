@@ -28,11 +28,11 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 - [X] User have RefreshToken  
 - [X] User have User Role (https://docs.nestjs.com/graphql/extensions)
 - [X] Soft Delete
+- [X] Translatable Entity
+- [X] Remove orphaned entities from a relation (https://github.com/typeorm/typeorm/issues/6382)
 - [ ] When create a new recipe, that should be kept whom (Recipe -> User Relations)
-- [ ] Remove orphaned entities from a relation (https://github.com/typeorm/typeorm/issues/6382)
 - [ ] API Exception Structures
 - [ ] Batch Actions
-- [ ] Translatable Entity
 - [ ] DataLoader integration
 
 

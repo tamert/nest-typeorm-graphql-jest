@@ -36,6 +36,7 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
+    "dateformat": "^4.5.1",
     "dotenv": "^10.0.0",
     "graphql": "15.5.0",
     "graphql-query-complexity": "0.8.1",
