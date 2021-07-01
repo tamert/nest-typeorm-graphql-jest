@@ -20,6 +20,7 @@ export class RecipesResolver {
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(() => Recipe)
     @UseGuards(JwtAuthGuard)
+    @Directive('@deprecated(reason: "This query will be removed in the next version")')
     //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
 

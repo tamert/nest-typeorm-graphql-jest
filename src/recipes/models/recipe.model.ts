@@ -1,21 +1,11 @@
-import {Directive, Field, Extensions, ID, ObjectType, HideField} from '@nestjs/graphql';
+import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToMany} from 'typeorm';
 import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
 import {RecipeTranslation} from "./recipe-translation.model";
-
-
-import {FieldMiddleware, MiddlewareContext, NextFn} from '@nestjs/graphql';
-
-const currentLocaleMiddleware: FieldMiddleware = async (
-    ctx: MiddlewareContext,
-    next: NextFn,
-) => {
-    const value = await next();
-    return ctx.source.translations.find((element => element.locale == (<any>ctx.context).req.headers.locale));
-};
+import {CurrentLocaleMiddleware} from "../../translatable/middlewares/current-locale.middleware";
 
 @Entity()
-@ObjectType()
+@ObjectType("Recipe")
 export class Recipe {
     @PrimaryGeneratedColumn()
     @Field(type => ID)
@@ -46,7 +36,7 @@ export class Recipe {
     @OneToMany(type => RecipeTranslation, translation => translation.base, {cascade: true, eager: true})
     translations!: RecipeTranslation[];
 
-    @Field(type => RecipeTranslation, {middleware: [currentLocaleMiddleware], nullable: true})
+    @Field(type => RecipeTranslation, {middleware: [CurrentLocaleMiddleware], nullable: true})
     translate?: RecipeTranslation;
 
 }

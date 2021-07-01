@@ -21,7 +21,6 @@ export class RecipesService {
     }
 
     async create(data: NewRecipeInput): Promise<Recipe> {
-        console.log(data);
         return await this.recipeRepository.createRecipe(data);
     }
 
@@ -34,9 +33,13 @@ export class RecipesService {
     }
 
     async paginate(options: IPaginationOptions): Promise<IPaginated<Recipe>> {
-        const queryBuilder = this.recipeRepository.createQueryBuilder('c');
-        queryBuilder.orderBy('c.id', 'DESC'); // Or whatever you need to do
-        const {items, links, meta} = await paginate<Recipe>(queryBuilder, options);
+        const {items, links, meta} = await paginate<Recipe>(this.recipeRepository, options, {
+            relations: ['translations'],
+            order: {
+                id: 'DESC',
+            },
+        });
+        console.log(items);
         return {
             currentPage:  meta.currentPage,
             totalCount:  meta.totalItems,
