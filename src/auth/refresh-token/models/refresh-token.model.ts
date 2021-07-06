@@ -14,8 +14,8 @@ import {User} from "../../../users/models/users.model";
 
 @Entity()
 export class RefreshToken {
-    @PrimaryGeneratedColumn('uuid')
-    public id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({
         nullable: false
