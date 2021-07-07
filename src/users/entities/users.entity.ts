@@ -1,6 +1,6 @@
 import {Field, ID, ObjectType, HideField} from '@nestjs/graphql';
 import {IsBoolean, IsEmail, IsEmpty, IsString, MinLength} from 'class-validator';
-import {RefreshToken} from "../../auth/refresh-token/models/refresh-token.model";
+import {RefreshToken} from "../../auth/refresh-token/entitites/refresh-token.entity";
 import {
     Column,
     Entity,

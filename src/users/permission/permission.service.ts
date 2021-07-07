@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {Connection} from "typeorm/index";
 import {PermissionRepository} from "./permission.repository";
-import {Permission} from "./models/permission.model";
+import {Permission} from "./entities/permission.entity";
 
 
 @Injectable()

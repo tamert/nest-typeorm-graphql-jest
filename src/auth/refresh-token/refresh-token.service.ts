@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {Connection} from "typeorm/index";
 import {RefreshTokenRepository} from "./refresh-token.repository";
-import {RefreshToken} from "./models/refresh-token.model";
+import {RefreshToken} from "./entitites/refresh-token.entity";
 
 
 @Injectable()

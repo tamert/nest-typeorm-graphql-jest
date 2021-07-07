@@ -2,7 +2,7 @@ import {NotFoundException, UseGuards} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewUserInput} from './dto/new-user.input';
-import {User} from './models/users.model';
+import {User} from './entities/users.entity';
 import {UsersService} from './users.service';
 import {DeleteUserResponse} from "./dto/delete-response.dto";
 import {PaginatedUser} from "./dto/paginate-response.dto";

@@ -1,5 +1,5 @@
 import {ObjectType} from "@nestjs/graphql";
-import {Recipe} from "../models/recipe.model";
+import {Recipe} from "../entities/recipe.entity";
 import {Paginated} from "../../common/dto/paginate-response.dto";
 
 @ObjectType()

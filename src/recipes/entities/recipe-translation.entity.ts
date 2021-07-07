@@ -1,9 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, JoinColumn, Column, ManyToOne} from 'typeorm';
-import {Recipe} from "./recipe.model";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
+import {Recipe} from "./recipe.entity";
 import {Field, ID, ObjectType} from '@nestjs/graphql';
 
 @Entity()
-@ObjectType()
+@ObjectType("recipeTranslation")
 export class RecipeTranslation {
     @Field(type => ID)
     @PrimaryGeneratedColumn() id: number;

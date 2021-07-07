@@ -4,7 +4,7 @@ import {
     EventSubscriber,
     InsertEvent,
 } from 'typeorm';
-import {Permission} from "./models/permission.model";
+import {Permission} from "./entities/permission.entity";
 import {ConfigService} from "@nestjs/config";
 
 

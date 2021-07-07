@@ -2,7 +2,7 @@ import {NotFoundException, UseGuards} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
-import {Recipe} from './models/recipe.model';
+import {Recipe} from './entities/recipe.entity';
 import {RecipesService} from './recipes.service';
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {PaginatedRecipes} from "./dto/paginate-response.dto";

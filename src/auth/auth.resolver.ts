@@ -1,6 +1,6 @@
 import {Args, Query, Resolver} from '@nestjs/graphql';
 import {AuthService} from "./auth.service";
-import {User} from "../users/models/users.model";
+import {User} from "../users/entities/users.entity";
 import {LoginResponse} from "./dto/login-response.dto";
 import {unauthorized, refreshTokenExpiredSignature} from "../common/errors";
 

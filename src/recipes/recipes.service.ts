@@ -1,6 +1,6 @@
 import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {NewRecipeInput} from './dto/new-recipe.input';
-import {Recipe} from './models/recipe.model';
+import {Recipe} from './entities/recipe.entity';
 import {RecipeRepository} from "./recipe.repository";
 import {Connection} from "typeorm/index";
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";

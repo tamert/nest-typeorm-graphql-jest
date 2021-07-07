@@ -1,11 +1,11 @@
 import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToMany} from 'typeorm';
 import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
-import {RecipeTranslation} from "./recipe-translation.model";
+import {RecipeTranslation} from "./recipe-translation.entity";
 import {CurrentLocaleMiddleware} from "../../translatable/middlewares/current-locale.middleware";
 
 @Entity()
-@ObjectType("Recipe")
+@ObjectType("recipe")
 export class Recipe {
     @PrimaryGeneratedColumn()
     @Field(type => ID)

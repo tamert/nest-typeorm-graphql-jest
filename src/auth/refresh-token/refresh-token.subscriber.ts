@@ -4,7 +4,7 @@ import {
     EventSubscriber,
     InsertEvent,
 } from 'typeorm';
-import {RefreshToken} from "./models/refresh-token.model";
+import {RefreshToken} from "./entitites/refresh-token.entity";
 import {ConfigService} from "@nestjs/config";
 import { v4 as uuid } from 'uuid';
 

@@ -1,5 +1,5 @@
 import {ObjectType} from "@nestjs/graphql";
-import {User} from "../models/users.model";
+import {User} from "../entities/users.entity";
 import {Paginated} from "../../common/dto/paginate-response.dto";
 
 @ObjectType()

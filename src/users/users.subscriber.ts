@@ -4,7 +4,7 @@ import {
     EventSubscriber,
     InsertEvent,
 } from 'typeorm';
-import {User} from "./models/users.model";
+import {User} from "./entities/users.entity";
 import {passwordToHash} from "../common/helpers/password.helper";
 import { v4 as uuid } from 'uuid';
 

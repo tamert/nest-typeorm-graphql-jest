@@ -1,6 +1,6 @@
 import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {NewUserInput} from './dto/new-user.input';
-import {User} from './models/users.model';
+import {User} from './entities/users.entity';
 import {UserRepository} from "./user.repository";
 import {Connection} from "typeorm/index";
 import {DeleteUserResponse} from "./dto/delete-response.dto";
