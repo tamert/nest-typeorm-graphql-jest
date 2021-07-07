@@ -10,12 +10,12 @@ import {
 } from 'typeorm';
 
 import { IsString, IsUUID, MinLength } from 'class-validator';
-import {User} from "../../../users/models/users.model";
+import {User} from "../../../users/entities/users.entity";
 
 @Entity()
 export class RefreshToken {
-    @PrimaryGeneratedColumn('uuid')
-    public id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({
         nullable: false

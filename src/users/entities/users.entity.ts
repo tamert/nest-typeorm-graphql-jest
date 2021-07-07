@@ -1,6 +1,6 @@
 import {Field, ID, ObjectType, HideField} from '@nestjs/graphql';
 import {IsBoolean, IsEmail, IsEmpty, IsString, MinLength} from 'class-validator';
-import {RefreshToken} from "../../auth/refresh-token/models/refresh-token.model";
+import {RefreshToken} from "../../auth/refresh-token/entitites/refresh-token.entity";
 import {
     Column,
     Entity,
@@ -17,15 +17,6 @@ export class User {
     @Field(type => ID)
     id: number;
 
-    @Column({
-        nullable: true,
-    })
-    @Index({unique: true})
-    @IsString()
-    @HideField()
-    @MinLength(32)
-    public authorizationCode: string;
-
     @Column({length: 100})
     @Field()
     public firstName: string;
@@ -35,7 +26,7 @@ export class User {
     public lastName: string;
 
     @Field(type => [String])
-    @Column("simple-json")
+    @Column("simple-json",  { default: () => null })
     roles: string[];
 
     @Field()
@@ -58,15 +49,14 @@ export class User {
     @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, {onDelete: 'CASCADE'})
     public refreshTokens: RefreshToken[];
 
+    @HideField()
+    @Column({ nullable: true })
+    salt: string;
+
+
     public jwtPayload() {
         return {
-            id: this.id,
-            email: this.email,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            isSuperUser: this.isSuperUser,
-            roles: this.roles,
-            creationDate: this.creationDate,
+            salt: this.salt
         };
     }
 

@@ -1,12 +1,12 @@
 import {Injectable} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
-import {User} from "../users/models/users.model";
+import {User} from "../users/entities/users.entity";
 import {checkPassword} from "../common/helpers/password.helper";
 import {UsersService} from "../users/users.service";
 import {RefreshTokenService} from "./refresh-token/refresh-token.service";
 import {LoginResponse} from "./dto/login-response.dto";
 import {ConfigService} from "@nestjs/config";
-import {RefreshToken} from "./refresh-token/models/refresh-token.model";
+import {RefreshToken} from "./refresh-token/entitites/refresh-token.entity";
 
 @Injectable()
 export class AuthService {

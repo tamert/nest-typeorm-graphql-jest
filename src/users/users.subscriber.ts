@@ -4,10 +4,9 @@ import {
     EventSubscriber,
     InsertEvent,
 } from 'typeorm';
-import {User} from "./models/users.model";
+import {User} from "./entities/users.entity";
 import {passwordToHash} from "../common/helpers/password.helper";
-
-
+import { v4 as uuid } from 'uuid';
 
 @EventSubscriber()
 export class UsersSubscriber implements EntitySubscriberInterface<User> {
@@ -19,11 +18,13 @@ export class UsersSubscriber implements EntitySubscriberInterface<User> {
         return User;
     }
 
-     async beforeInsert(event: InsertEvent<User>) {
+    async beforeInsert(event: InsertEvent<User>) {
         let {password} = event.entity
         if (password) {
             event.entity.password = await passwordToHash(password);
         }
+        event.entity.salt = await uuid();
+        event.entity.roles = ["ROLE_USER"];
         console.log(`BEFORE USER INSERTED: `, event.entity);
     }
 }

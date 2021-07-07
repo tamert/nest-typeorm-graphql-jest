@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import {Recipe} from "../models/recipe.model";
+import {Recipe} from "../entities/recipe.entity";
 
 
 @ObjectType()

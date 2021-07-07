@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 
 import {RefreshTokenService} from './refresh-token.service';
-import {RefreshToken} from "./models/refresh-token.model";
+import {RefreshToken} from "./entitites/refresh-token.entity";
 import {RefreshTokenSubscriber} from "./refresh-token.subscriber";
 import {ConfigService} from "@nestjs/config";
 

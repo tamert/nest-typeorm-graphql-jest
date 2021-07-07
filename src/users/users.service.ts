@@ -1,14 +1,14 @@
 import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {NewUserInput} from './dto/new-user.input';
-import {User} from './models/users.model';
+import {User} from './entities/users.entity';
 import {UserRepository} from "./user.repository";
 import {Connection} from "typeorm/index";
 import {DeleteUserResponse} from "./dto/delete-response.dto";
 import {
     paginate,
-    Pagination,
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
+import {IPaginated, PageInfo} from "../common/dto/paginate-response.dto";
 
 @Injectable()
 export class UsersService {
@@ -37,10 +37,20 @@ export class UsersService {
         return await this.userRepository.find(usersArgs);
     }
 
-    async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
+    async paginate(options: IPaginationOptions): Promise<IPaginated<User>> {
         const queryBuilder = this.userRepository.createQueryBuilder('c');
         queryBuilder.orderBy('c.id', 'DESC'); // Or whatever you need to do
-        return paginate<User>(queryBuilder, options);
+        const {items, links, meta} = await paginate<User>(queryBuilder, options);
+        return {
+            currentPage: meta.currentPage,
+            totalCount: meta.totalItems,
+            totalPages: meta.totalPages,
+            nodes: items,
+            pageInfo: new PageInfo(
+                links.next,
+                links.previous
+            )
+        };
     }
 
     async remove(id: string): Promise<DeleteUserResponse> {

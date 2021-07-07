@@ -1,15 +1,14 @@
 import {BadRequestException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {NewRecipeInput} from './dto/new-recipe.input';
-import {Recipe} from './models/recipe.model';
+import {Recipe} from './entities/recipe.entity';
 import {RecipeRepository} from "./recipe.repository";
 import {Connection} from "typeorm/index";
 import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {
     paginate,
-    Pagination,
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-
+import {IPaginated, PageInfo} from "../common/dto/paginate-response.dto";
 @Injectable()
 export class RecipesService {
 
@@ -33,19 +32,31 @@ export class RecipesService {
         return await this.recipeRepository.find(recipesArgs);
     }
 
-    async paginate(options: IPaginationOptions): Promise<Pagination<Recipe>> {
-        const queryBuilder = this.recipeRepository.createQueryBuilder('c');
-        queryBuilder.orderBy('c.id', 'DESC'); // Or whatever you need to do
-
-
-        return paginate<Recipe>(queryBuilder, options);
+    async paginate(options: IPaginationOptions): Promise<IPaginated<Recipe>> {
+        const {items, links, meta} = await paginate<Recipe>(this.recipeRepository, options, {
+            relations: ['translations'],
+            order: {
+                id: 'DESC',
+            },
+        });
+        console.log(items);
+        return {
+            currentPage:  meta.currentPage,
+            totalCount:  meta.totalItems,
+            totalPages: meta.totalPages,
+            nodes: items,
+            pageInfo: new PageInfo(
+                links.next,
+                links.previous
+            )
+        };
     }
 
     async remove(id: string): Promise<DeleteRecipeResponse> {
 
         try {
             const relatedRecipe = await this.recipeRepository.findOneOrFail(id)
-            await this.recipeRepository.delete(id)
+            await this.recipeRepository.softDelete(id)
             return new DeleteRecipeResponse(relatedRecipe, 'DELETED', 200)
         } catch (e) {
             if (e.status === 401) {

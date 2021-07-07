@@ -5,8 +5,8 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 <p align="center">Simple GraphQL API with NestJS in Back-end. </p>
 
 <p align="center">
-  <a href="https://github.com/Rocketseat/youtube-challenge-nestjs-graphql/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/tamert/nest-typeorm-graphql-jest?color=%237159c1&logoColor=%237159c1&style=flat" alt="Contributors">
+  <a href="https://github.com/90pixel/nest-typeorm-graphql-jest/contributors">
+    <img src="https://img.shields.io/github/contributors/90pixel/nest-typeorm-graphql-jest?color=%237159c1&logoColor=%237159c1&style=flat" alt="Contributors">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/github/license/tamert/nest-typeorm-graphql-jest?color=%237159c1&logo=mit" alt="License">
@@ -26,9 +26,13 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 - [x] User, Users can be listed
 - [x] User can be logged (JWT Token) with username and password
 - [X] User have RefreshToken  
-- [ ] User have User Role (https://docs.nestjs.com/graphql/extensions)
+- [X] User have User Role (https://docs.nestjs.com/graphql/extensions)
+- [X] Soft Delete
+- [X] Translatable Entity
+- [X] Remove orphaned entities from a relation (https://github.com/typeorm/typeorm/issues/6382)
 - [ ] When create a new recipe, that should be kept whom (Recipe -> User Relations)
-- [ ] Add Swagger support
+- [ ] API Exception Structures
+- [ ] Batch Actions
 - [ ] DataLoader integration
 
 
@@ -42,6 +46,7 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 ## What can be better?
 
 - Automatic Testing for GraphQL APIs
+- Maybe can running PostgreSQL
 
 ## Dependencies
 

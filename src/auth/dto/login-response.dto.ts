@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import {User} from "../../users/models/users.model";
+import {User} from "../../users/entities/users.entity";
 
 
 @ObjectType()

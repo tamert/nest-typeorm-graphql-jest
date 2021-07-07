@@ -1,8 +1,0 @@
-query($id: String!) {
-    recipe(id: $id) {
-            id
-            title
-            description
-            creationDate
-    }
-}

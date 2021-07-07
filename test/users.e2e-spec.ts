@@ -28,7 +28,7 @@ describe('Users (e2e)', () => {
         await app.close();
     });
 
-    const queryList = readFileSync(__dirname + '/../graphql/users.graphql','utf8');
+    const queryList = readFileSync(__dirname + '/../graphql/query/users.graphql','utf8');
 
     it('fetch all', () => {
         return request(app.getHttpServer())

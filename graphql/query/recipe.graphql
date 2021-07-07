@@ -1,0 +1,14 @@
+query($id: String!) {
+    recipe(id: $id) {
+            id
+            title
+            description,
+        translations {
+            name,
+            locale
+        },
+        translate {
+            name
+        }
+    }
+}

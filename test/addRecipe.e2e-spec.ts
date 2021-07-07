@@ -5,6 +5,9 @@ import {FastifyAdapter} from '@nestjs/platform-fastify';
 import {ValidationPipe} from '@nestjs/common';
 import {readFileSync} from 'fs';
 
+/**
+ * todo: can using token ("auth") for refresh token generated access token clickup task id #n3apzy
+ */
 describe('Recipes (e2e)', () => {
     let app;
 
@@ -26,7 +29,7 @@ describe('Recipes (e2e)', () => {
         await app.close();
     });
 
-    const mutationAdd = readFileSync(__dirname + '/../graphql/recipeAdded.graphql', 'utf8');
+    const mutationAdd = readFileSync(__dirname + '/../graphql/mutation/recipeAdded.graphql', 'utf8');
 
     it('fetch all', () => {
         return request(app.getHttpServer())
