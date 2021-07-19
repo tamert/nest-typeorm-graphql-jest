@@ -7,8 +7,8 @@ import {UsersModule} from "./users/users.module";
 import {AuthModule} from "./auth/auth.module";
 import {UpperCaseDirective} from "./common/directives/upper-case.directive";
 import {DateFormatDirective} from "./common/directives/date-format.directive";
-import {GraphQLSchema} from 'graphql';
-import { mergeSchemas } from '@graphql-tools/merge';
+//import {GraphQLSchema} from 'graphql';
+//import { mergeSchemas } from '@graphql-tools/merge';
 const schemaDirectives = {
     upper: UpperCaseDirective,
     date: DateFormatDirective
@@ -33,12 +33,16 @@ const schemaDirectives = {
             autoLoadEntities: true,
             migrations: ['src/migration/*{.ts}'],
         }),
+
         GraphQLModule.forRoot({
             installSubscriptionHandlers: true,
             schemaDirectives: {
                 upper: UpperCaseDirective,
                 date: DateFormatDirective,
             },
+            playground: false,
+            debug: false,
+            introspection: true,
             typePaths: ['./src/common/graphql.global.graphql'],
             autoSchemaFile: './schema.gql',
             sortSchema: true,
