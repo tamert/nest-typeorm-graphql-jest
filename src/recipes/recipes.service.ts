@@ -9,6 +9,7 @@ import {
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import {IPaginated, PageInfo} from "../common/dto/paginate-response.dto";
+import {User} from "../users/entities/users.entity";
 @Injectable()
 export class RecipesService {
 
@@ -20,8 +21,8 @@ export class RecipesService {
         this.recipeRepository = this.connection.getCustomRepository(RecipeRepository);
     }
 
-    async create(data: NewRecipeInput): Promise<Recipe> {
-        return await this.recipeRepository.createRecipe(data);
+    async create(data: NewRecipeInput, user: User): Promise<Recipe> {
+        return await this.recipeRepository.createRecipe(data, user);
     }
 
     async findOneById(id: string): Promise<Recipe> {

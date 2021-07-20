@@ -1,8 +1,17 @@
 import {Directive, Field, Extensions, ID, ObjectType} from '@nestjs/graphql';
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToMany} from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    OneToMany,
+    ManyToOne
+} from 'typeorm';
 import {fieldPermissionMiddleware} from "../../users/permission/middlewares/fieldPermission.middleware";
 import {RecipeTranslation} from "./recipe-translation.entity";
 import {CurrentLocaleMiddleware} from "../../translatable/middlewares/current-locale.middleware";
+import {User} from "../../users/entities/users.entity";
 
 @Entity()
 @ObjectType("recipe")
@@ -31,6 +40,10 @@ export class Recipe {
     @Field(type => [String])
     @Column("simple-json")
     ingredients: string[];
+
+    @Field(type => User)
+    @ManyToOne(type => User, recipe => recipe.recipes, { onDelete: 'CASCADE' })
+    public user: User;
 
     @Field(type => [RecipeTranslation], {nullable: true})
     @OneToMany(type => RecipeTranslation, translation => translation.base, {cascade: true, eager: true})

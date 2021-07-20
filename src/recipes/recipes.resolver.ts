@@ -8,6 +8,8 @@ import {DeleteRecipeResponse} from "./dto/delete-response.dto";
 import {PaginatedRecipes} from "./dto/paginate-response.dto";
 import {PaginateInput} from "../common/dto/paginate.input";
 import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
+import {CurrentUser} from "../auth/decorators/current-user.decorator";
+import {User} from "../users/entities/users.entity";
 
 const pubSub = new PubSub();
 
@@ -45,11 +47,12 @@ export class RecipesResolver {
 
     @Mutation(() => Recipe)
     @UseGuards(JwtAuthGuard)
-    //@Scopes('required')
+    @Scopes('required')
     async addRecipe(
+        @CurrentUser() user: User,
         @Args('newRecipeData') newRecipeData: NewRecipeInput,
     ): Promise<Recipe> {
-        const recipe = await this.recipesService.create(newRecipeData);
+        const recipe = await this.recipesService.create(newRecipeData, user);
         await pubSub.publish('recipeAdded', {recipeAdded: recipe});
         return recipe;
     }
