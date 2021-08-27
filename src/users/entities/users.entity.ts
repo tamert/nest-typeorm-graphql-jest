@@ -9,7 +9,6 @@ import {
     CreateDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import {RecipeTranslation} from "../../recipes/entities/recipe-translation.entity";
 import {Recipe} from "../../recipes/entities/recipe.entity";
 
 @Entity()
