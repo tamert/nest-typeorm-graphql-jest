@@ -40,7 +40,6 @@ export class RecipesService {
                 id: 'DESC',
             },
         });
-        console.log(items);
         return {
             currentPage:  meta.currentPage,
             totalCount:  meta.totalItems,

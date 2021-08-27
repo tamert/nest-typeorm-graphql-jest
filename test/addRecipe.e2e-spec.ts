@@ -20,60 +20,100 @@ describe('Recipes (e2e)', () => {
 
         app.useGlobalPipes(new ValidationPipe({transform: true}));
         await app.init();
+
         app.getHttpAdapter()
             .getInstance()
             .ready();
     });
 
-    afterAll(async () => {
-        await app.close();
-    });
+    function getGraphQl(type: string, file: string)  {
+        return readFileSync(__dirname + '/../graphql/'+type+'/'+file+'.graphql', 'utf8');
+    }
 
-    const mutationAdd = readFileSync(__dirname + '/../graphql/mutation/recipeAdded.graphql', 'utf8');
-
-    it('fetch all', () => {
-        return request(app.getHttpServer())
+    it('recipe crud', async () => {
+        /**
+         * user login
+         */
+        const loginRequest = await request(app.getHttpServer())
             .post('/graphql')
             .send({
                 operationName: null,
-                query: mutationAdd,
-            })
-            .expect(({body}) => {
-                expect(body.data.addRecipe).toBeDefined();
-                request(app.getHttpServer())
-                    .post('/graphql')
-                    .send({
-                        operationName: null,
-                        query: 'query {\n' +
-                            '    recipe(id: "'+body.data.addRecipe.id+'") {\n' +
-                            '            id\n' +
-                            '            title\n' +
-                            '    }\n' +
-                            '}',
-                    })
-                    .expect(({body}) => {
-                        expect(body.data.recipe).toBeDefined();
-                        request(app.getHttpServer())
-                            .post('/graphql')
-                            .send({
-                                operationName: null,
-                                query: 'mutation {\n' +
-                                    '    removeUser(id: "'+body.data.addRecipe.id+'") {\n' +
-                                    '        status\n' +
-                                    '        data {\n' +
-                                    '            id\n' +
-                                    '        }\n' +
-                                    '    }\n' +
-                                    '}',
-                            })
-                            .expect(({body}) => {
-                                expect(body.data.removeUser).toBeDefined();
-                                expect(body.data.removeUser.status).toEqual(true);
-                            }).expect(200)
-                    }).expect(200)
-            })
-            .expect(200);
+                query: getGraphQl("query", "login"),
+            });
+        expect(loginRequest.status).toBe(200);
+        expect(loginRequest.body.data.login.accessToken).toBeDefined();
+        const token: object = {"authorization": "Bearer " + loginRequest.body.data.login.accessToken};
+
+        /**
+         * recipe add
+         */
+        const recipeAddedRequest = await request(app.getHttpServer())
+            .post('/graphql')
+            .set(token)
+            .send({
+                operationName: null,
+                query: getGraphQl("mutation", "recipeAdded"),
+            });
+        expect(recipeAddedRequest.status).toBe(200);
+        expect(recipeAddedRequest.body.data.addRecipe.id).toBeDefined();
+        const recipeId: number = recipeAddedRequest.body.data.addRecipe.id
+
+        /**
+         * recipe get
+         */
+        const recipeGetRequest = await request(app.getHttpServer())
+            .post('/graphql')
+            .set(token)
+            .send({
+                operationName: null,
+                query: getGraphQl("query", "recipe"),
+                variables: {
+                    id: recipeId
+                }
+            });
+        expect(recipeGetRequest.status).toBe(200);
+        expect(recipeGetRequest.body.data.recipe.title).toBeDefined();
+
+        console.log(recipeGetRequest.body.data.recipe.title)
+
+        /**
+         * recipe get All
+         */
+        const recipeGetAllRequest = await request(app.getHttpServer())
+            .post('/graphql')
+            .set(token)
+            .send({
+                operationName: null,
+                query: getGraphQl("query", "recipes"),
+                variables: {
+                    page: 1,
+                    limit: 10
+                }
+            });
+        expect(recipeGetAllRequest.status).toBe(200);
+        expect(recipeGetAllRequest.body.data.recipes.currentPage).toBeDefined();
+        expect(recipeGetAllRequest.body.data.recipes.totalCount).toBeDefined();
+
+        /**
+         * recipe get
+         */
+        const recipeDeleteRequest = await request(app.getHttpServer())
+            .post('/graphql')
+            .set(token)
+            .send({
+                operationName: null,
+                query: getGraphQl("mutation", "recipeRemoved"),
+                variables: {
+                    id: recipeId
+                }
+            });
+        expect(recipeDeleteRequest.status).toBe(200);
+        expect(recipeDeleteRequest.body.data.removeRecipe.data.id).toBeDefined();
+
     });
 
+    afterAll(async () => {
+        await app.close();
+    });
 
 });

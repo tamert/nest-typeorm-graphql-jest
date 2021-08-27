@@ -1,5 +1,5 @@
-mutation {
-    removeRecipe(id: "11") {
+mutation($id: String!) {
+    removeRecipe(id: $id) {
         data {
             id
             title
