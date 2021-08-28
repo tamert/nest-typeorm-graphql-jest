@@ -9,6 +9,7 @@ import {
     CreateDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import {Recipe} from "../../recipes/entities/recipe.entity";
 
 @Entity()
 @ObjectType()
@@ -53,6 +54,9 @@ export class User {
     @Column({ nullable: true })
     salt: string;
 
+    @Field(type => [Recipe], {nullable: true})
+    @OneToMany(type => Recipe, recipe => recipe.user, {cascade: true, eager: true})
+    recipes!: Recipe[];
 
     public jwtPayload() {
         return {

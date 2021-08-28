@@ -7,7 +7,7 @@ query($page: Int!, $limit: Int!) {
             hasNextPage
             hasPrevPage
         }
-        items {
+        items: nodes {
             id
             title
             creationDate

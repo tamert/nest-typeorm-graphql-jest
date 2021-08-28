@@ -1,33 +1,13 @@
 import {EntityRepository, Repository} from 'typeorm';
 import {Recipe} from "./entities/recipe.entity";
 import {NewRecipeInput} from "./dto/new-recipe.input";
+import {User} from "../users/entities/users.entity";
 
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {
-
-    createRecipe = async (newRecipeInput: NewRecipeInput) => {
-        /**
-         * todo bakılacak
-         *
-         * [Object: null prototype] {
-  description: 'limonata nasıl yapılır gelin beraber inceleyelim.',
-  ingredients: [ 'limon', 'şeker', 'su' ],
-  title: 'Limonata',
-  translations: [
-    [Object: null prototype] {
-      description: 'teasdsadadasdadasdast',
-      locale: 'en',
-      name: 'asdasdasda'
-    },
-    [Object: null prototype] {
-      description: 'sadada',
-      locale: 'tr',
-      name: 'testa'
-    }
-  ]
-}
-         geçici çözüm -> JSON.parse(JSON.stringify())
-         */
-        return await this.save(JSON.parse(JSON.stringify(newRecipeInput)));
+    createRecipe = async (newRecipeInput: NewRecipeInput, user: User) => {
+        const data = JSON.parse(JSON.stringify(newRecipeInput));
+        data.user = user;
+        return await this.save(data);
     };
 }
