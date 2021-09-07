@@ -1,39 +1,63 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import * as request from 'supertest';
-import {AppModule} from '../src/app.module';
+import {AppModule} from '../src/test.module';
 import {FastifyAdapter} from '@nestjs/platform-fastify';
 import {ValidationPipe} from '@nestjs/common';
 import {readFileSync} from 'fs';
+//import {getRepositoryToken} from '@nestjs/typeorm';
+//import {Recipe} from "../src/recipes/entities/recipe.entity";
 
-/**
- * todo: can using token ("auth") for refresh token generated access token clickup task id #n3apzy
- */
 describe('Recipes (e2e)', () => {
     let app;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [AppModule],
-        }).compile();
+        })
+        /* .overrideProvider(getRepositoryToken(Recipe))
+            .useFactory({
+            factory: () => ({
+                create: jest.fn(() => new Promise((resolve) => resolve(Recipe))),
+                find: jest.fn(() => new Promise((resolve) => resolve([Recipe]))),
+                update: jest.fn((id, project2) => new Promise((resolve) => resolve(Recipe))),
+                findOne: jest.fn(
+                    ({uuid}) =>
+                        new Promise((resolve) => {
+                            resolve(Recipe);
+                        }),
+                ),
+                delete: jest.fn((uuid) => new Promise((resolve) => {
+                    return resolve;
+                })),
+                save: jest.fn(
+                    (data) =>
+                        new Promise((resolve) => {
+                            // data = data.uuid === undefined ? data.uuid = uuid() : data;
+                            resolve(data);
+                        }),
+                ),
+            }),
+        }) */
+        .compile();
 
-        app = moduleFixture.createNestApplication(new FastifyAdapter());
+    app = moduleFixture.createNestApplication(new FastifyAdapter());
 
-        app.useGlobalPipes(new ValidationPipe({transform: true}));
-        await app.init();
+    app.useGlobalPipes(new ValidationPipe({transform: true}));
+    await app.init();
 
-        app.getHttpAdapter()
-            .getInstance()
-            .ready();
-    });
+    app.getHttpAdapter()
+        .getInstance()
+        .ready();
+});
 
-    function getGraphQl(type: string, file: string)  {
-        return readFileSync(__dirname + '/../graphql/'+type+'/'+file+'.graphql', 'utf8');
-    }
+function getGraphQl(type: string, file: string) {
+    return readFileSync(__dirname + '/../graphql/' + type + '/' + file + '.graphql', 'utf8');
+}
 
-    it('recipe crud', async () => {
-        /**
-         * user login
-         */
+it('recipe crud', async () => {
+    /**
+     * user login
+     */
         const loginRequest = await request(app.getHttpServer())
             .post('/graphql')
             .send({

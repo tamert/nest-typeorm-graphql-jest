@@ -1,4 +1,4 @@
-import {NotFoundException, UseGuards} from '@nestjs/common';
+import {NotFoundException, InternalServerErrorException, UseGuards} from '@nestjs/common';
 import {Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType} from '@nestjs/graphql';
 import {PubSub} from 'apollo-server-express';
 import {NewRecipeInput} from './dto/new-recipe.input';
@@ -10,10 +10,12 @@ import {PaginateInput} from "../common/dto/paginate.input";
 import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
 import {CurrentUser} from "../auth/decorators/current-user.decorator";
 import {User} from "../users/entities/users.entity";
+import { UseInterceptors } from '@nestjs/common';
+import { SentryInterceptor } from '../common/helpers/sentry';
 
 const pubSub = new PubSub();
 
-
+@UseInterceptors(SentryInterceptor)
 @Resolver(of => Recipe)
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {
@@ -67,6 +69,12 @@ export class RecipesResolver {
     @Query(() => String)
     async hello() {
         return 'hello';
+    }
+
+    @Query(() => String)
+    async test() {
+        throw new InternalServerErrorException();
+        return "test";
     }
 
     @Subscription(() => Recipe)
