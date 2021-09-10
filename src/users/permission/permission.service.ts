@@ -1,17 +1,13 @@
-import {Injectable} from '@nestjs/common';
-import {Connection} from "typeorm/index";
-import {PermissionRepository} from "./permission.repository";
-import {Permission} from "./entities/permission.entity";
-
+import { Injectable } from '@nestjs/common';
+import { Connection } from 'typeorm/index';
+import { PermissionRepository } from './permission.repository';
+import { Permission } from './entities/permission.entity';
 
 @Injectable()
 export class PermissionService {
-
     private permissionRepository: PermissionRepository;
 
-    constructor(
-        private readonly connection: Connection
-    ) {
+    constructor(private readonly connection: Connection) {
         this.permissionRepository = this.connection.getCustomRepository(PermissionRepository);
     }
 
@@ -26,6 +22,4 @@ export class PermissionService {
     async findOne(data: object): Promise<Permission> {
         return await this.permissionRepository.findOne(data);
     }
-
 }
-

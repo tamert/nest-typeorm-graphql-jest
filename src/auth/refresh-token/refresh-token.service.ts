@@ -1,17 +1,13 @@
-import {Injectable} from '@nestjs/common';
-import {Connection} from "typeorm/index";
-import {RefreshTokenRepository} from "./refresh-token.repository";
-import {RefreshToken} from "./entitites/refresh-token.entity";
-
+import { Injectable } from '@nestjs/common';
+import { Connection } from 'typeorm/index';
+import { RefreshTokenRepository } from './refresh-token.repository';
+import { RefreshToken } from './entitites/refresh-token.entity';
 
 @Injectable()
 export class RefreshTokenService {
-
     private refreshTokenRepository: RefreshTokenRepository;
 
-    constructor(
-        private readonly connection: Connection
-    ) {
+    constructor(private readonly connection: Connection) {
         this.refreshTokenRepository = this.connection.getCustomRepository(RefreshTokenRepository);
     }
 
@@ -26,6 +22,4 @@ export class RefreshTokenService {
     async findOne(data: object): Promise<RefreshToken> {
         return await this.refreshTokenRepository.findOne(data);
     }
-
 }
-

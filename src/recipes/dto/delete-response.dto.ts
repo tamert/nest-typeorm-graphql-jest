@@ -1,21 +1,20 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import {Recipe} from "../entities/recipe.entity";
-
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Recipe } from '../entities/recipe.entity';
 
 @ObjectType()
 export class DeleteRecipeResponse {
     constructor(recipe: Recipe, status: string, code: number) {
-        this.data = recipe
-        this.status = status
-        this.code = code
+        this.data = recipe;
+        this.status = status;
+        this.code = code;
     }
 
     @Field()
-    data: Recipe
+    data: Recipe;
 
     @Field()
-    status: string
+    status: string;
 
     @Field()
-    code: number
+    code: number;
 }

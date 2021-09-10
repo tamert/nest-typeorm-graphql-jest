@@ -1,29 +1,28 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import {User} from "../../users/entities/users.entity";
-
+import { Field, ObjectType } from '@nestjs/graphql';
+import { User } from '../../users/entities/users.entity';
 
 @ObjectType()
 export class LoginResponse {
     constructor(user: User, accessToken: string, expiresIn: Date, refreshToken: string, refreshTokenExpiresAt: Date) {
-        this.user = user
-        this.accessToken = accessToken
-        this.expiresIn = expiresIn
-        this.refreshToken = refreshToken
-        this.refreshTokenExpiresAt = refreshTokenExpiresAt
+        this.user = user;
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
+        this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
     @Field()
-    user: User
+    user: User;
 
     @Field()
-    accessToken: string
+    accessToken: string;
 
     @Field()
-    expiresIn: Date
+    expiresIn: Date;
 
     @Field()
-    refreshToken: string
+    refreshToken: string;
 
     @Field()
-    refreshTokenExpiresAt: Date
+    refreshTokenExpiresAt: Date;
 }
