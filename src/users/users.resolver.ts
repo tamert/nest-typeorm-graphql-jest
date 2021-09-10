@@ -16,7 +16,7 @@ const pubSub = new PubSub();
 export class UsersResolver {
     constructor(private readonly usersService: UsersService) {}
 
-    @Query((returns) => User)
+    @Query((of) => User)
     async user(@Args('id') id: string): Promise<User> {
         const user = await this.usersService.findOneById(id);
         if (!user) {
@@ -26,7 +26,7 @@ export class UsersResolver {
         return user;
     }
 
-    @Query((returns) => User)
+    @Query((of) => User)
     @UseGuards(JwtAuthGuard)
     @Scopes('required')
     async currentUser(@CurrentUser() user: User): Promise<User> {
@@ -34,7 +34,7 @@ export class UsersResolver {
         return user;
     }
 
-    @Query((returns) => PaginatedUser)
+    @Query((of) => PaginatedUser)
     async users(@Args() options: PaginateInput): Promise<PaginatedUser> {
         return await this.usersService.paginate({
             limit: options.limit,
@@ -43,19 +43,19 @@ export class UsersResolver {
         });
     }
 
-    @Mutation((returns) => User)
+    @Mutation((of) => User)
     async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<User> {
         const user = await this.usersService.create(newUserData);
         await pubSub.publish('userAdded', { userAdded: user });
         return user;
     }
 
-    @Mutation((returns) => DeleteUserResponse)
+    @Mutation((of) => DeleteUserResponse)
     async removeUser(@Args('id') id: string): Promise<DeleteUserResponse> {
         return await this.usersService.remove(id);
     }
 
-    @Subscription((returns) => User)
+    @Subscription((of) => User)
     userAdded() {
         return pubSub.asyncIterator('userAdded');
     }

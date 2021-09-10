@@ -22,12 +22,12 @@ import { DateFormatDirective } from './common/directives/date-format.directive';
             port: +process.env.DB_PORT,
             username: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE,
+            database: process.env.DB_BACKUP_DATABASE,
             synchronize: process.env.NODE_ENV !== 'prod',
             autoLoadEntities: true,
+            entities: ['src/*.entity.ts'],
             migrations: ['src/migration/*{.ts}'],
         }),
-
         GraphQLModule.forRoot({
             installSubscriptionHandlers: true,
             schemaDirectives: {
