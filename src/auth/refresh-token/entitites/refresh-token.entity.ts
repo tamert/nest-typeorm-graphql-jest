@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 import { IsString, IsUUID, MinLength } from 'class-validator';
-import {User} from "../../../users/entities/users.entity";
+import { User } from '../../../users/entities/users.entity';
 
 @Entity()
 export class RefreshToken {
@@ -18,7 +18,7 @@ export class RefreshToken {
     id: number;
 
     @Column({
-        nullable: false
+        nullable: false,
     })
     @Index({ unique: true })
     @IsString()

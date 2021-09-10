@@ -1,15 +1,15 @@
-import {Module} from '@nestjs/common';
-import {GraphQLModule} from '@nestjs/graphql';
-import {RecipesModule} from './recipes/recipes.module';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {ConfigModule} from '@nestjs/config';
-import {UsersModule} from "./users/users.module";
-import {AuthModule} from "./auth/auth.module";
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { RecipesModule } from './recipes/recipes.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
-            ignoreEnvFile: false
+            ignoreEnvFile: false,
         }),
         RecipesModule,
         UsersModule,
@@ -35,9 +35,8 @@ import {AuthModule} from "./auth/auth.module";
             typePaths: ['./src/common/graphql.global.graphql'],
             autoSchemaFile: './schema.gql',
             sortSchema: true,
-            context: ({req}) => ({...req}),
+            context: ({ req }) => ({ ...req }),
         }),
     ],
 })
-export class AppModule {
-}
+export class AppModule {}

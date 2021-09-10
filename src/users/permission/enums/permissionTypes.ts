@@ -1,5 +1,5 @@
 export enum permissionTypes {
-    ROLE = "role",
-    USER = "user",
-    GROUP = "group"
+    ROLE = 'role',
+    USER = 'user',
+    GROUP = 'group',
 }

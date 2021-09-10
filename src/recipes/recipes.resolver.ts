@@ -1,25 +1,24 @@
-import {NotFoundException, InternalServerErrorException, UseGuards} from '@nestjs/common';
-import {Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType} from '@nestjs/graphql';
-import {PubSub} from 'apollo-server-express';
-import {NewRecipeInput} from './dto/new-recipe.input';
-import {Recipe} from './entities/recipe.entity';
-import {RecipesService} from './recipes.service';
-import {DeleteRecipeResponse} from "./dto/delete-response.dto";
-import {PaginatedRecipes} from "./dto/paginate-response.dto";
-import {PaginateInput} from "../common/dto/paginate.input";
-import {JwtAuthGuard, Scopes} from "../auth/guards/jwt-auth.guard";
-import {CurrentUser} from "../auth/decorators/current-user.decorator";
-import {User} from "../users/entities/users.entity";
+import { NotFoundException, InternalServerErrorException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType } from '@nestjs/graphql';
+import { PubSub } from 'apollo-server-express';
+import { NewRecipeInput } from './dto/new-recipe.input';
+import { Recipe } from './entities/recipe.entity';
+import { RecipesService } from './recipes.service';
+import { DeleteRecipeResponse } from './dto/delete-response.dto';
+import { PaginatedRecipes } from './dto/paginate-response.dto';
+import { PaginateInput } from '../common/dto/paginate.input';
+import { JwtAuthGuard, Scopes } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../users/entities/users.entity';
 import { UseInterceptors } from '@nestjs/common';
 import { SentryInterceptor } from '../common/helpers/sentry';
 
 const pubSub = new PubSub();
 
 @UseInterceptors(SentryInterceptor)
-@Resolver(of => Recipe)
+@Resolver((of) => Recipe)
 export class RecipesResolver {
-    constructor(private readonly recipesService: RecipesService) {
-    }
+    constructor(private readonly recipesService: RecipesService) {}
 
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(() => Recipe)
@@ -27,12 +26,11 @@ export class RecipesResolver {
     @Directive('@deprecated(reason: "This query will be removed in the next version")')
     //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
-
         const recipe = await this.recipesService.findOneById(id);
         if (!recipe) {
             throw new NotFoundException(id);
         }
-        await pubSub.publish('recipe', {recipe: recipe});
+        await pubSub.publish('recipe', { recipe: recipe });
         return recipe;
     }
 
@@ -43,19 +41,16 @@ export class RecipesResolver {
         return await this.recipesService.paginate({
             limit: options.limit,
             page: options.page,
-            route: "/"
+            route: '/',
         });
     }
 
     @Mutation(() => Recipe)
     @UseGuards(JwtAuthGuard)
     @Scopes('required')
-    async addRecipe(
-        @CurrentUser() user: User,
-        @Args('newRecipeData') newRecipeData: NewRecipeInput,
-    ): Promise<Recipe> {
+    async addRecipe(@CurrentUser() user: User, @Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<Recipe> {
         const recipe = await this.recipesService.create(newRecipeData, user);
-        await pubSub.publish('recipeAdded', {recipeAdded: recipe});
+        await pubSub.publish('recipeAdded', { recipeAdded: recipe });
         return recipe;
     }
 
@@ -74,7 +69,7 @@ export class RecipesResolver {
     @Query(() => String)
     async test() {
         throw new InternalServerErrorException();
-        return "test";
+        return 'test';
     }
 
     @Subscription(() => Recipe)

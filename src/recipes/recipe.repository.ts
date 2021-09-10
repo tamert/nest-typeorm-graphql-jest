@@ -1,7 +1,7 @@
-import {EntityRepository, Repository} from 'typeorm';
-import {Recipe} from "./entities/recipe.entity";
-import {NewRecipeInput} from "./dto/new-recipe.input";
-import {User} from "../users/entities/users.entity";
+import { EntityRepository, Repository } from 'typeorm';
+import { Recipe } from './entities/recipe.entity';
+import { NewRecipeInput } from './dto/new-recipe.input';
+import { User } from '../users/entities/users.entity';
 
 @EntityRepository(Recipe)
 export class RecipeRepository extends Repository<Recipe> {

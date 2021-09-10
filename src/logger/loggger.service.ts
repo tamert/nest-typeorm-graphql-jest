@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 const config = {
-    "level": "info"
+    level: 'info',
 };
 
 enum ELogLevel {

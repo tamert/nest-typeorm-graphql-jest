@@ -1,12 +1,12 @@
-import {Injectable} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
-import {User} from "../users/entities/users.entity";
-import {checkPassword} from "../common/helpers/password.helper";
-import {UsersService} from "../users/users.service";
-import {RefreshTokenService} from "./refresh-token/refresh-token.service";
-import {LoginResponse} from "./dto/login-response.dto";
-import {ConfigService} from "@nestjs/config";
-import {RefreshToken} from "./refresh-token/entitites/refresh-token.entity";
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../users/entities/users.entity';
+import { checkPassword } from '../common/helpers/password.helper';
+import { UsersService } from '../users/users.service';
+import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { LoginResponse } from './dto/login-response.dto';
+import { ConfigService } from '@nestjs/config';
+import { RefreshToken } from './refresh-token/entitites/refresh-token.entity';
 
 @Injectable()
 export class AuthService {
@@ -15,16 +15,14 @@ export class AuthService {
         protected configService: ConfigService,
         protected refreshTokenService: RefreshTokenService,
         private readonly jwtService: JwtService,
-    ) {
-    }
+    ) {}
 
     async validateUser(email: string, pass: string): Promise<any> {
         const user = await this.usersService.findOne({
-            email: email
+            email: email,
         });
 
-        if (!(user instanceof User))
-            return null;
+        if (!(user instanceof User)) return null;
 
         const isMatch = await checkPassword(pass, user.password);
 
@@ -36,28 +34,24 @@ export class AuthService {
     }
 
     async validateRefreshToken(token: string): Promise<any> {
-
         const verify = this.jwtService.verify(token);
-        if (!verify)
-            return null;
+        if (!verify) return null;
 
         const db = await this.refreshTokenService.findOne({
-            refreshToken: verify.refreshToken
+            refreshToken: verify.refreshToken,
         });
 
-        if (!db || !this.checkExpiresAt(db.refreshTokenExpiresAt))
-            return null;
+        if (!db || !this.checkExpiresAt(db.refreshTokenExpiresAt)) return null;
 
-        return db
+        return db;
     }
 
-
     async createRefreshToken(user: User): Promise<RefreshToken> {
-        return await this.refreshTokenService.create({user});
+        return await this.refreshTokenService.create({ user });
     }
 
     async updateRefreshToken(refresh: RefreshToken): Promise<RefreshToken> {
-        refresh.refreshToken = "";
+        refresh.refreshToken = '';
         return await this.refreshTokenService.update(refresh);
     }
 
@@ -66,21 +60,23 @@ export class AuthService {
     }
 
     async token(user: User, refresh: RefreshToken): Promise<LoginResponse> {
-
         const accessToken = this.jwtService.sign(user.jwtPayload(), {
-            secret: this.configService.get("JWT_SECRET"),
-            expiresIn: `${this.configService.get('JWT_EXPIRES_IN')}s`
+            secret: this.configService.get('JWT_SECRET'),
+            expiresIn: `${this.configService.get('JWT_EXPIRES_IN')}s`,
         });
 
-        const refreshToken = this.jwtService.sign({
-            "refreshToken": refresh.refreshToken,
-            "user": user.jwtPayload()
-        }, {
-            secret: this.configService.get("JWT_SECRET"),
-            expiresIn: `${this.configService.get('REFRESH_TOKEN_EXPIRES_IN')}s`
-        });
+        const refreshToken = this.jwtService.sign(
+            {
+                refreshToken: refresh.refreshToken,
+                user: user.jwtPayload(),
+            },
+            {
+                secret: this.configService.get('JWT_SECRET'),
+                expiresIn: `${this.configService.get('REFRESH_TOKEN_EXPIRES_IN')}s`,
+            },
+        );
 
-        const expiresIn = new Date(new Date().getTime() + (parseInt(this.configService.get('JWT_EXPIRES_IN')) * 1000));
+        const expiresIn = new Date(new Date().getTime() + parseInt(this.configService.get('JWT_EXPIRES_IN')) * 1000);
 
         return new LoginResponse(user, accessToken, expiresIn, refreshToken, refresh.refreshTokenExpiresAt);
     }
@@ -88,5 +84,4 @@ export class AuthService {
     protected checkExpiresAt(expiresAt: Date) {
         return new Date(expiresAt).toISOString() > new Date().toISOString();
     }
-
 }

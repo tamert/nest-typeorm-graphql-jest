@@ -1,12 +1,6 @@
-import {
-    Connection,
-    EntitySubscriberInterface,
-    EventSubscriber,
-    InsertEvent,
-} from 'typeorm';
-import {Permission} from "./entities/permission.entity";
-import {ConfigService} from "@nestjs/config";
-
+import { Connection, EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
+import { Permission } from './entities/permission.entity';
+import { ConfigService } from '@nestjs/config';
 
 @EventSubscriber()
 export class PermissionSubscriber implements EntitySubscriberInterface<Permission> {
@@ -18,12 +12,7 @@ export class PermissionSubscriber implements EntitySubscriberInterface<Permissio
         return Permission;
     }
 
+    async beforeInsert(event: InsertEvent<Permission>) {}
 
-    async beforeInsert(event: InsertEvent<Permission>) {
-
-    }
-
-    async beforeUpdate(event: InsertEvent<Permission>) {
-    }
-
+    async beforeUpdate(event: InsertEvent<Permission>) {}
 }

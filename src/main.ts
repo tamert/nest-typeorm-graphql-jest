@@ -1,18 +1,12 @@
-import {ValidationPipe} from '@nestjs/common';
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 import * as Sentry from '@sentry/node';
 
-import {
-    FastifyAdapter,
-    NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-    const app = await NestFactory.create<NestFastifyApplication>(
-        AppModule,
-        new FastifyAdapter()
-    );
+    const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
 
@@ -24,4 +18,4 @@ async function bootstrap() {
     console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
-bootstrap().then(load => {});
+bootstrap().then((load) => {});
