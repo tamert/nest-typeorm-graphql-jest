@@ -1,4 +1,4 @@
-import { SchemaDirectiveVisitor } from 'graphql-tools';
+import { SchemaDirectiveVisitor } from '@graphql-tools/utils';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 
 export class UpperCaseDirective extends SchemaDirectiveVisitor {

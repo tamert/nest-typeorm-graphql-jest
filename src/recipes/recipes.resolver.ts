@@ -1,6 +1,6 @@
 import { NotFoundException, InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType } from '@nestjs/graphql';
-import { PubSub } from 'apollo-server-express';
+
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { Recipe } from './entities/recipe.entity';
 import { RecipesService } from './recipes.service';
@@ -12,6 +12,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../users/entities/users.entity';
 import { UseInterceptors } from '@nestjs/common';
 import { SentryInterceptor } from '../common/helpers/sentry';
+import { PubSub } from 'graphql-subscriptions';
 
 const pubSub = new PubSub();
 
@@ -20,10 +21,9 @@ const pubSub = new PubSub();
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {}
 
-    @Directive('@deprecated(reason: "This query will be removed in the next version")')
+    @Directive('@upper')
     @Query(() => Recipe)
     @UseGuards(JwtAuthGuard)
-    @Directive('@deprecated(reason: "This query will be removed in the next version")')
     //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
         const recipe = await this.recipesService.findOneById(id);
@@ -61,6 +61,7 @@ export class RecipesResolver {
         return await this.recipesService.remove(id);
     }
 
+    @Directive('@upper')
     @Query(() => String)
     async hello() {
         return 'hello';
