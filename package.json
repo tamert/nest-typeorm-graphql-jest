@@ -37,6 +37,7 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
+    "cli-progress": "^3.9.0",
     "dateformat": "^4.5.1",
     "dotenv": "^10.0.0",
     "graphql": "15.5.0",
@@ -44,6 +45,7 @@
     "graphql-subscriptions": "1.2.1",
     "graphql-tools": "^8.2.0",
     "mysql2": "^2.3.0",
+    "nestjs-command": "^3.0.2",
     "nestjs-typeorm-paginate": "^2.6.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -51,7 +53,8 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "^7.3.0",
     "sqlite3": "^5.0.2",
-    "typeorm": "^0.2.37"
+    "typeorm": "^0.2.37",
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.1",

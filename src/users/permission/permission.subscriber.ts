@@ -12,7 +12,7 @@ export class PermissionSubscriber implements EntitySubscriberInterface<Permissio
         return Permission;
     }
 
-    async beforeInsert(event: InsertEvent<Permission>) {}
-
-    async beforeUpdate(event: InsertEvent<Permission>) {}
+    async beforeInsert(event: InsertEvent<Permission>) {
+        console.log(event);
+    }
 }

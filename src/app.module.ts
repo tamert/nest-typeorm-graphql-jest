@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { UpperCaseDirective } from './common/directives/upper-case.directive';
 import { DateFormatDirective } from './common/directives/date-format.directive';
+import { CommandModule } from 'nestjs-command';
+import { TestCommand } from './common/command/test.command';
 
 @Module({
     imports: [
@@ -15,6 +17,7 @@ import { DateFormatDirective } from './common/directives/date-format.directive';
         }),
         RecipesModule,
         UsersModule,
+        CommandModule,
         AuthModule,
         TypeOrmModule.forRoot({
             type: process.env.DB_TYPE as any,
@@ -43,5 +46,6 @@ import { DateFormatDirective } from './common/directives/date-format.directive';
             context: ({ req }) => ({ ...req }),
         }),
     ],
+    providers: [TestCommand],
 })
 export class AppModule {}
