@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { NewUserInput } from './dto/new-user.input';
-import { User } from './entities/users.entity';
+import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
 import { Connection } from 'typeorm/index';
 import { DeleteUserResponse } from './dto/delete-response.dto';
@@ -23,7 +23,7 @@ export class UsersService {
         return await this.userRepository.findOne(id);
     }
 
-    async findOne(data: object): Promise<User> {
+    async findOne(data: any): Promise<User> {
         return await this.userRepository.findOne(data);
     }
 

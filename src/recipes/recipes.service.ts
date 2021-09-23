@@ -6,7 +6,7 @@ import { Connection } from 'typeorm/index';
 import { DeleteRecipeResponse } from './dto/delete-response.dto';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { IPaginated, PageInfo } from '../common/dto/paginate-response.dto';
-import { User } from '../users/entities/users.entity';
+import { User } from '../users/entities/user.entity';
 @Injectable()
 export class RecipesService {
     private recipeRepository: RecipeRepository;

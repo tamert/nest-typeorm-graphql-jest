@@ -1,14 +1,24 @@
 import { Field, ID, ObjectType, HideField } from '@nestjs/graphql';
-import { IsBoolean, IsEmail, IsEmpty, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsEmpty } from 'class-validator';
 import { RefreshToken } from '../../auth/refresh-token/entitites/refresh-token.entity';
-import { Column, Entity, Index, OneToMany, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinTable,
+    Index,
+    OneToMany,
+    ManyToMany,
+    CreateDateColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Recipe } from '../../recipes/entities/recipe.entity';
+import { Permission } from '../permission/entities/permission.entity';
 
 @Entity()
 @ObjectType()
 export class User {
     @PrimaryGeneratedColumn()
-    @Field((type) => ID)
+    @Field(() => ID)
     id: number;
 
     @Column({ length: 100 })
@@ -19,7 +29,7 @@ export class User {
     @Field()
     public lastName: string;
 
-    @Field((type) => [String])
+    @Field(() => [String])
     @Column('simple-json', { default: () => null })
     roles: string[];
 
@@ -47,9 +57,14 @@ export class User {
     @Column({ nullable: true })
     salt: string;
 
-    @Field((type) => [Recipe], { nullable: true })
-    @OneToMany((type) => Recipe, (recipe) => recipe.user, { cascade: true, eager: true })
+    @Field(() => [Recipe], { nullable: true })
+    @OneToMany(() => Recipe, (recipe) => recipe.user, { cascade: true, eager: true })
     recipes!: Recipe[];
+
+    @Field(() => [Permission], { nullable: true })
+    @ManyToMany(() => Permission)
+    @JoinTable()
+    permissions: Permission[];
 
     public jwtPayload() {
         return {

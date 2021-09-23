@@ -7,9 +7,9 @@ import { RecipesService } from './recipes.service';
 import { DeleteRecipeResponse } from './dto/delete-response.dto';
 import { PaginatedRecipes } from './dto/paginate-response.dto';
 import { PaginateInput } from '../common/dto/paginate.input';
-import { JwtAuthGuard, Scopes } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, Public, Role, Permission } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { User } from '../users/entities/users.entity';
+import { User } from '../users/entities/user.entity';
 import { UseInterceptors } from '@nestjs/common';
 import { SentryInterceptor } from '../common/helpers/sentry';
 import { PubSub } from 'graphql-subscriptions';
@@ -17,14 +17,14 @@ import { PubSub } from 'graphql-subscriptions';
 const pubSub = new PubSub();
 
 @UseInterceptors(SentryInterceptor)
-@Resolver((of) => Recipe)
+@UseGuards(JwtAuthGuard)
+@Resolver(() => Recipe)
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {}
 
     @Directive('@upper')
+    @Public()
     @Query(() => Recipe)
-    @UseGuards(JwtAuthGuard)
-    //@Scopes('required')
     async recipe(@Args('id') id: string): Promise<Recipe> {
         const recipe = await this.recipesService.findOneById(id);
         if (!recipe) {
@@ -35,8 +35,9 @@ export class RecipesResolver {
     }
 
     @Query(() => PaginatedRecipes)
-    @UseGuards(JwtAuthGuard)
-    //@Scopes('required')
+    //@Role('ROLE_USER')
+    @Permission('test2')
+    @Public()
     async recipes(@Args() options: PaginateInput): Promise<PaginatedRecipes> {
         return await this.recipesService.paginate({
             limit: options.limit,
@@ -46,31 +47,15 @@ export class RecipesResolver {
     }
 
     @Mutation(() => Recipe)
-    @UseGuards(JwtAuthGuard)
-    @Scopes('required')
     async addRecipe(@CurrentUser() user: User, @Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<Recipe> {
         const recipe = await this.recipesService.create(newRecipeData, user);
         await pubSub.publish('recipeAdded', { recipeAdded: recipe });
         return recipe;
     }
 
-    @UseGuards(JwtAuthGuard)
-    //@Scopes('required')
     @Mutation(() => DeleteRecipeResponse)
     async removeRecipe(@Args('id') id: string): Promise<DeleteRecipeResponse> {
         return await this.recipesService.remove(id);
-    }
-
-    @Directive('@upper')
-    @Query(() => String)
-    async hello() {
-        return 'hello';
-    }
-
-    @Query(() => String)
-    async test() {
-        throw new InternalServerErrorException();
-        return 'test';
     }
 
     @Subscription(() => Recipe)

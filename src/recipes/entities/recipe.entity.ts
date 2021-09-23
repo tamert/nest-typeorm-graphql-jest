@@ -11,13 +11,13 @@ import {
 import { fieldPermissionMiddleware } from '../../users/permission/middlewares/fieldPermission.middleware';
 import { RecipeTranslation } from './recipe-translation.entity';
 import { CurrentLocaleMiddleware } from '../../translatable/middlewares/current-locale.middleware';
-import { User } from '../../users/entities/users.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 @ObjectType('recipe')
 export class Recipe {
     @PrimaryGeneratedColumn()
-    @Field((type) => ID)
+    @Field(() => ID)
     id: number;
 
     @Field()
@@ -37,18 +37,18 @@ export class Recipe {
     @DeleteDateColumn()
     deletedAt?: Date;
 
-    @Field((type) => [String])
+    @Field(() => [String])
     @Column('simple-json')
     ingredients: string[];
 
-    @Field((type) => User)
-    @ManyToOne((type) => User, (recipe) => recipe.recipes, { onDelete: 'CASCADE' })
+    @Field(() => User)
+    @ManyToOne(() => User, (recipe) => recipe.recipes, { onDelete: 'CASCADE' })
     public user: User;
 
-    @Field((type) => [RecipeTranslation], { nullable: true })
-    @OneToMany((type) => RecipeTranslation, (translation) => translation.base, { cascade: true, eager: true })
+    @Field(() => [RecipeTranslation], { nullable: true })
+    @OneToMany(() => RecipeTranslation, (translation) => translation.base, { cascade: true, eager: true })
     translations!: RecipeTranslation[];
 
-    @Field((type) => RecipeTranslation, { middleware: [CurrentLocaleMiddleware], nullable: true })
+    @Field(() => RecipeTranslation, { middleware: [CurrentLocaleMiddleware], nullable: true })
     translate?: RecipeTranslation;
 }

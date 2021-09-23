@@ -1,47 +1,59 @@
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
-import { Injectable, ExecutionContext, UnauthorizedException, SetMetadata } from '@nestjs/common';
+import { Injectable, ExecutionContext, SetMetadata, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../decorators/publis.decorator';
-import { UsersService } from '../../users/users.service';
+import { User } from '../../users/entities/user.entity';
 
-export const Scopes = (...scopes: string[]) => SetMetadata('scopes', scopes);
+export const Public = () => SetMetadata('public', true);
+export const Permission = (...permissions: string[]) => SetMetadata('permissions', permissions);
+export const Role = (...roles: string[]) => SetMetadata('roles', roles);
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-    public scopes = [];
+    private public = false;
+    private permissions: string[] = [];
+    private roles: string[] = [];
 
-    constructor(private reflector: Reflector, private userService: UsersService) {
+    constructor(public reflector: Reflector) {
         super();
     }
 
     canActivate(context: ExecutionContext) {
-        this.scopes = this.reflector.get<string[]>('scopes', context.getHandler());
-
         const ctx = GqlExecutionContext.create(context);
         const { req } = ctx.getContext();
-
-        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-            context.getHandler(),
-            context.getClass(),
-        ]);
-        if (isPublic) return true;
-
+        this.public = this.reflector.get<boolean>('public', context.getHandler());
+        this.permissions = this.reflector.get<string[]>('permissions', context.getHandler());
+        this.roles = this.reflector.get<string[]>('roles', context.getHandler());
         return super.canActivate(new ExecutionContextHost([req]));
     }
 
     handleRequest(err, user, info) {
-        if (user) {
-            user = this.userService.findOne({ salt: user.salt });
-            /**
-             * @todo added permission using scope clickup id #n3aq4c
-             */
-        } else if (this.scopes && this.scopes.indexOf('required') !== -1 && !user) {
-            throw new UnauthorizedException();
-        } else if (err) {
+        if (err) {
             throw err;
         }
+
+        if (user instanceof User) {
+            // Role
+            if (this.roles && this.roles.length && this.roles.some((role) => user.roles.includes(role))) {
+                throw new ForbiddenException();
+            }
+
+            // Permission
+            if (this.permissions && this.permissions.length) {
+                const find = user.permissions.find((userPermission) =>
+                    this.permissions.find((p) => p == userPermission.name),
+                );
+                if (!find) {
+                    throw new ForbiddenException();
+                }
+            }
+        } else {
+            if (this.public && (this.roles && this.roles.length) === 0 && this.permissions && this.permissions.length)
+                return user;
+            throw new UnauthorizedException();
+        }
+
         return user;
     }
 }

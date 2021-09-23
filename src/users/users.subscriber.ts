@@ -1,5 +1,5 @@
 import { Connection, EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
-import { User } from './entities/users.entity';
+import { User } from './entities/user.entity';
 import { passwordToHash } from '../common/helpers/password.helper';
 import { v4 as uuid } from 'uuid';
 
