@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User } from '../entities/users.entity';
+import { User } from '../entities/user.entity';
 
 @ObjectType()
 export class DeleteUserResponse {

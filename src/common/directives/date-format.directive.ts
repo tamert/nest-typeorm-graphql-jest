@@ -1,4 +1,4 @@
-import { SchemaDirectiveVisitor } from 'graphql-tools';
+import { SchemaDirectiveVisitor } from '@graphql-tools/utils';
 import { defaultFieldResolver, GraphQLField, GraphQLString } from 'graphql';
 import formatDate from 'dateformat';
 

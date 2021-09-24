@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 import { IsString, IsUUID, MinLength } from 'class-validator';
-import { User } from '../../../users/entities/users.entity';
+import { User } from '../../../users/entities/user.entity';
 
 @Entity()
 export class RefreshToken {

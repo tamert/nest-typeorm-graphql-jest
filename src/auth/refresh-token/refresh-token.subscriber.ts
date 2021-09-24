@@ -21,9 +21,4 @@ export class RefreshTokenSubscriber implements EntitySubscriberInterface<Refresh
         event.entity.refreshToken = await uuid();
         event.entity.refreshTokenExpiresAt = this.expiresAt();
     }
-
-    async beforeUpdate(event: InsertEvent<RefreshToken>) {
-        event.entity.refreshToken = await uuid();
-        event.entity.refreshTokenExpiresAt = this.expiresAt();
-    }
 }
