@@ -4,11 +4,11 @@ import { User } from '../users/entities/user.entity';
 import { LoginResponse } from './dto/login-response.dto';
 import { unauthorized, refreshTokenExpiredSignature } from '../common/errors';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export class AuthResolver {
     constructor(private readonly authService: AuthService) {}
 
-    @Query((returns) => LoginResponse)
+    @Query(() => LoginResponse)
     async login(@Args('email') email: string, @Args('password') password: string): Promise<LoginResponse> {
         const user = await this.authService.validateUser(email, password);
         if (!(user instanceof User)) {
@@ -18,7 +18,7 @@ export class AuthResolver {
         return await this.authService.token(user, refresh);
     }
 
-    @Query((returns) => LoginResponse)
+    @Query(() => LoginResponse)
     async refreshToken(@Args('token') token: string): Promise<LoginResponse> {
         const refreshToken = await this.authService.validateRefreshToken(token);
         if (!refreshToken) {

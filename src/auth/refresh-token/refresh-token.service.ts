@@ -11,7 +11,7 @@ export class RefreshTokenService {
         this.refreshTokenRepository = this.connection.getCustomRepository(RefreshTokenRepository);
     }
 
-    async create(data: object): Promise<RefreshToken> {
+    async create(data: RefreshToken): Promise<RefreshToken> {
         return await this.refreshTokenRepository.createRefreshToken(data);
     }
 
@@ -19,7 +19,7 @@ export class RefreshTokenService {
         return await this.refreshTokenRepository.save(refresh);
     }
 
-    async findOne(data: object): Promise<RefreshToken> {
+    async findOne(data: RefreshToken): Promise<RefreshToken> {
         return await this.refreshTokenRepository.findOne(data);
     }
 }

@@ -5,7 +5,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 @Entity()
 @ObjectType('recipeTranslation')
 export class RecipeTranslation {
-    @Field((type) => ID)
+    @Field(() => ID)
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -21,7 +21,7 @@ export class RecipeTranslation {
     @Column()
     description: string;
 
-    @Field((type) => Recipe)
-    @ManyToOne((type) => Recipe, (recipe) => recipe.translations, { onDelete: 'CASCADE' })
+    @Field(() => Recipe)
+    @ManyToOne(() => Recipe, (recipe) => recipe.translations, { onDelete: 'CASCADE' })
     public base: Recipe;
 }

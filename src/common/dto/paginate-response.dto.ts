@@ -26,7 +26,7 @@ export interface IPaginated<T> {
 export const Paginated = <T>(classRef: Type<T>): Type<IPaginated<T>> => {
     @ObjectType({ isAbstract: true })
     class PaginatedType {
-        @Field((type) => [classRef])
+        @Field(() => [classRef])
         nodes: T[];
 
         @Field()

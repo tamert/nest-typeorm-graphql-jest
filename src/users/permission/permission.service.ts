@@ -11,7 +11,7 @@ export class PermissionService {
         this.permissionRepository = this.connection.getCustomRepository(PermissionRepository);
     }
 
-    async create(data: object): Promise<Permission> {
+    async create(data: Permission): Promise<Permission> {
         return await this.permissionRepository.createPermission(data);
     }
 
@@ -19,7 +19,7 @@ export class PermissionService {
         return await this.permissionRepository.save(permission);
     }
 
-    async findOne(data: object): Promise<Permission> {
+    async findOne(data: Permission): Promise<Permission> {
         return await this.permissionRepository.findOne(data);
     }
 }

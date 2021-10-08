@@ -3,7 +3,7 @@ import { Permission } from './entities/permission.entity';
 
 @EntityRepository(Permission)
 export class PermissionRepository extends Repository<Permission> {
-    createPermission = async (options: object) => {
-        return await this.save(options);
+    createPermission = async (permission: Permission) => {
+        return await this.save(permission);
     };
 }

@@ -18,4 +18,5 @@ async function bootstrap() {
     console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
-bootstrap().then((load) => {});
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+bootstrap().then(() => {});
