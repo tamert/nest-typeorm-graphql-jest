@@ -1,5 +1,5 @@
-import { NotFoundException, InternalServerErrorException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription, Directive, ObjectType } from '@nestjs/graphql';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Subscription, Directive } from '@nestjs/graphql';
 
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { Recipe } from './entities/recipe.entity';
@@ -7,7 +7,7 @@ import { RecipesService } from './recipes.service';
 import { DeleteRecipeResponse } from './dto/delete-response.dto';
 import { PaginatedRecipes } from './dto/paginate-response.dto';
 import { PaginateInput } from '../common/dto/paginate.input';
-import { JwtAuthGuard, Public, Role, Permission } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, Public, Permission } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { UseInterceptors } from '@nestjs/common';
