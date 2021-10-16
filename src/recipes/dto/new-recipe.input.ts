@@ -27,9 +27,9 @@ export class NewRecipeInput {
     @Length(30, 255)
     description?: string;
 
-    @Field((type) => [String])
+    @Field(() => [String])
     ingredients: string[];
 
-    @Field((type) => [NewRecipeTranslation])
+    @Field(() => [NewRecipeTranslation])
     translations: NewRecipeTranslation[];
 }

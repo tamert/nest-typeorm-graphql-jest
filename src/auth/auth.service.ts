@@ -39,7 +39,7 @@ export class AuthService {
 
         const db = await this.refreshTokenService.findOne({
             refreshToken: verify.refreshToken,
-        });
+        } as RefreshToken);
 
         if (!db || !this.checkExpiresAt(db.refreshTokenExpiresAt)) return null;
 
@@ -47,7 +47,7 @@ export class AuthService {
     }
 
     async createRefreshToken(user: User): Promise<RefreshToken> {
-        return await this.refreshTokenService.create({ user });
+        return await this.refreshTokenService.create({ user } as RefreshToken);
     }
 
     async updateRefreshToken(refresh: RefreshToken): Promise<RefreshToken> {

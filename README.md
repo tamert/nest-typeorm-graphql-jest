@@ -5,11 +5,13 @@ Starter - NestJS + TypeORM + GraphQL + Jest + JWT
 <p align="center">Simple GraphQL API with NestJS in Back-end. </p>
 
 <p align="center">
+
+[![DeepScan grade](https://deepscan.io/api/teams/15652/projects/18825/branches/472502/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=15652&pid=18825&bid=472502)
   <a href="https://github.com/90pixel/nest-typeorm-graphql-jest/contributors">
     <img src="https://img.shields.io/github/contributors/90pixel/nest-typeorm-graphql-jest?color=%237159c1&logoColor=%237159c1&style=flat" alt="Contributors">
   </a>
   <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/github/license/tamert/nest-typeorm-graphql-jest?color=%237159c1&logo=mit" alt="License">
+    <img src="https://img.shields.io/github/license/tamert/nest-typeorm-graphql-jest?color=%23a759c1&logo=mit" alt="License">
   </a>
 </p>
 

@@ -6,7 +6,7 @@ export interface CurrentUserOptions {
 }
 
 export const CurrentUser: (options?: CurrentUserOptions) => ParameterDecorator = createParamDecorator(
-    (data: unknown, context: ExecutionContext, options: CurrentUserOptions = {}) => {
+    (data: unknown, context: ExecutionContext) => {
         const ctx = GqlExecutionContext.create(context);
         const user = ctx.getContext().req.user;
         if (!user) {

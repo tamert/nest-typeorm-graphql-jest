@@ -3,14 +3,14 @@ import { Max, Min } from 'class-validator';
 
 @ArgsType()
 export class PaginateInput {
-    @Field((type) => String)
+    @Field(() => String)
     search = '';
 
-    @Field((type) => Int)
+    @Field(() => Int)
     @Min(0)
     page = 0;
 
-    @Field((type) => Int)
+    @Field(() => Int)
     @Min(1)
     @Max(100)
     limit = 25;

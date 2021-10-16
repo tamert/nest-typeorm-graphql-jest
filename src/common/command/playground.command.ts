@@ -44,7 +44,9 @@ data.name = 'Douglas Adams';
 data.books['famous'] = {
     id: 1,
     title: 'The Ultimate Hitchhiker`s Guide',
-    body: 'Seconds before the Earth is demolished for a galactic freeway, Arthur Dent is saved by Ford Prefect, a researcher for the revised Guide. Together they stick out their thumbs to the stars and begin a wild journey through time and space. The Restaurant at the End of the Universe',
+    body:
+        'Seconds before the Earth is demolished for a galactic freeway, Arthur Dent is saved by Ford Prefect,' +
+        'a researcher for the revised Guide. Together they stick out their thumbs to the stars and begin a wild.',
 };
 
 /**
