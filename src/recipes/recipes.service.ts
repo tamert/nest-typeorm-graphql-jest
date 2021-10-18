@@ -7,33 +7,31 @@ import { DeleteRecipeResponse } from './dto/delete-response.dto';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { IPaginated, PageInfo } from '../common/dto/paginate-response.dto';
 import { User } from '../users/entities/user.entity';
+import { PaginateInput } from '../common/dto/paginate.input';
+import { DeleteUserResponse } from '../users/dto/delete-response.dto';
 @Injectable()
 export class RecipesService {
-    private recipeRepository: RecipeRepository;
+    private readonly repository: RecipeRepository;
 
     constructor(private readonly connection: Connection) {
-        this.recipeRepository = this.connection.getCustomRepository(RecipeRepository);
+        this.repository = this.connection.getCustomRepository(RecipeRepository);
     }
 
     async create(data: NewRecipeInput, user: User): Promise<Recipe> {
-        return await this.recipeRepository.createRecipe(data, user);
+        return await this.repository.createRecipe(data, user);
     }
 
     async findOneById(id: string): Promise<Recipe> {
-        return await this.recipeRepository.findOne(id);
+        return await this.repository.findOne(id);
     }
 
-    async findAll(recipesArgs: { skip: 0; take: 10 }): Promise<Recipe[]> {
-        return await this.recipeRepository.find(recipesArgs);
-    }
-
-    async paginate(options: IPaginationOptions): Promise<IPaginated<Recipe>> {
-        const { items, links, meta } = await paginate<Recipe>(this.recipeRepository, options, {
-            relations: ['translations'],
-            order: {
-                id: 'DESC',
-            },
-        });
+    async paginate(options: PaginateInput): Promise<IPaginated<Recipe>> {
+        const queryBuilder = this.repository.paginate(options);
+        const { items, links, meta } = await paginate<Recipe>(queryBuilder, {
+            limit: options.limit,
+            page: options.page,
+            route: '/',
+        } as IPaginationOptions);
         return {
             currentPage: meta.currentPage,
             totalCount: meta.totalItems,
@@ -44,18 +42,15 @@ export class RecipesService {
     }
 
     async remove(id: string): Promise<DeleteRecipeResponse> {
-        try {
-            const relatedRecipe = await this.recipeRepository.findOneOrFail(id);
-            await this.recipeRepository.softDelete(id);
-            return new DeleteRecipeResponse(relatedRecipe, 'DELETED', 200);
-        } catch (e) {
-            if (e.status === 401) {
-                throw new UnauthorizedException(e.message);
-            } else if (e.status === 404) {
-                throw new NotFoundException(e.message);
-            } else {
-                throw new BadRequestException(e.message);
-            }
+        const relatedRecipe = await this.repository.findOneOrFail(id);
+        if (!(relatedRecipe instanceof Recipe)) {
+            throw new NotFoundException('user not found!');
         }
+        try {
+            await this.repository.delete(id);
+        } catch (e) {
+            throw new BadRequestException(e.message);
+        }
+        return new DeleteRecipeResponse(relatedRecipe);
     }
 }

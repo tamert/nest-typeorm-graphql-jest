@@ -2,7 +2,6 @@ mutation($id: String!) {
     removeRecipe(id: $id) {
         data {
             id
-            title
         }
         code
         status

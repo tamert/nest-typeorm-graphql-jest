@@ -1,10 +1,15 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Max, Min } from 'class-validator';
+import { Max, Min, Length, IsOptional } from 'class-validator';
 
 @ArgsType()
 export class PaginateInput {
-    @Field(() => String)
-    search = '';
+    @Field(() => String, {
+        nullable: true,
+        description: 'Search by entity fields',
+    })
+    @Length(2)
+    @IsOptional()
+    search?: string = null;
 
     @Field(() => Int)
     @Min(0)

@@ -9,7 +9,10 @@ query($page: Int!, $limit: Int!) {
         }
         items: nodes {
             id
-            title
+            translate {
+                name
+                description
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from '../src/test.module';
+import { AppModule } from '../src/app.module';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import { readFileSync } from 'fs';
@@ -36,14 +36,18 @@ describe('Recipes (e2e)', () => {
 
         expect(loginRequest.status).toBe(200);
         expect(loginRequest.body.data.login.accessToken).toBeDefined();
-        const token: any = { authorization: 'Bearer ' + loginRequest.body.data.login.accessToken };
+        const headers: Record<string, string> = { authorization: 'Bearer ' + loginRequest.body.data.login.accessToken };
+        /**
+         * todo: get default language prefix from database
+         */
+        headers['locale'] = 'tr';
 
         /**
          * recipe add
          */
         const recipeAddedRequest = await request(app.getHttpServer())
             .post('/graphql')
-            .set(token)
+            .set(headers)
             .send({
                 operationName: null,
                 query: getGraphQl('mutation', 'recipeAdded'),
@@ -57,7 +61,7 @@ describe('Recipes (e2e)', () => {
          */
         const recipeGetRequest = await request(app.getHttpServer())
             .post('/graphql')
-            .set(token)
+            .set(headers)
             .send({
                 operationName: null,
                 query: getGraphQl('query', 'recipe'),
@@ -66,14 +70,15 @@ describe('Recipes (e2e)', () => {
                 },
             });
         expect(recipeGetRequest.status).toBe(200);
-        expect(recipeGetRequest.body.data.recipe.title).toBeDefined();
-
+        expect(recipeGetRequest.body.data.recipe.id).toBeDefined();
+        expect(recipeGetRequest.body.data.recipe.id).toBeDefined();
+        expect(recipeGetRequest.body.data.recipe.translate.name).toBeDefined();
         /**
          * recipe get All
          */
         const recipeGetAllRequest = await request(app.getHttpServer())
             .post('/graphql')
-            .set(token)
+            .set(headers)
             .send({
                 operationName: null,
                 query: getGraphQl('query', 'recipes'),
@@ -91,7 +96,7 @@ describe('Recipes (e2e)', () => {
          */
         const recipeDeleteRequest = await request(app.getHttpServer())
             .post('/graphql')
-            .set(token)
+            .set(headers)
             .send({
                 operationName: null,
                 query: getGraphQl('mutation', 'recipeRemoved'),

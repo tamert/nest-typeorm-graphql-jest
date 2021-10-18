@@ -38,7 +38,7 @@ import { PlaygroundCommand } from './common/command/playground.command';
                 upper: UpperCaseDirective,
                 date: DateFormatDirective,
             },
-            playground: false,
+            playground: true,
             debug: false,
             introspection: true,
             typePaths: ['./src/common/graphql.global.graphql'],

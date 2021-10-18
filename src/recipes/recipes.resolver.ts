@@ -1,5 +1,5 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription, Directive } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { Recipe } from './entities/recipe.entity';
@@ -7,7 +7,7 @@ import { RecipesService } from './recipes.service';
 import { DeleteRecipeResponse } from './dto/delete-response.dto';
 import { PaginatedRecipes } from './dto/paginate-response.dto';
 import { PaginateInput } from '../common/dto/paginate.input';
-import { JwtAuthGuard, Public, Permission } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, Public } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { UseInterceptors } from '@nestjs/common';
@@ -22,7 +22,6 @@ const pubSub = new PubSub();
 export class RecipesResolver {
     constructor(private readonly recipesService: RecipesService) {}
 
-    @Directive('@upper')
     @Public()
     @Query(() => Recipe)
     async recipe(@Args('id') id: string): Promise<Recipe> {
@@ -35,15 +34,9 @@ export class RecipesResolver {
     }
 
     @Query(() => PaginatedRecipes)
-    //@Role('ROLE_USER')
-    @Permission('test2')
     @Public()
     async recipes(@Args() options: PaginateInput): Promise<PaginatedRecipes> {
-        return await this.recipesService.paginate({
-            limit: options.limit,
-            page: options.page,
-            route: '/',
-        });
+        return await this.recipesService.paginate(options);
     }
 
     @Mutation(() => Recipe)

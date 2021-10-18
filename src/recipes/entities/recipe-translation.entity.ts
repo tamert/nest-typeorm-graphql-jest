@@ -21,6 +21,10 @@ export class RecipeTranslation {
     @Column()
     description: string;
 
+    @Field(() => [String])
+    @Column('simple-json', { default: () => null })
+    ingredients: string[];
+
     @Field(() => Recipe)
     @ManyToOne(() => Recipe, (recipe) => recipe.translations, { onDelete: 'CASCADE' })
     public base: Recipe;

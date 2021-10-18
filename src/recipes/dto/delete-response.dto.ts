@@ -3,7 +3,7 @@ import { Recipe } from '../entities/recipe.entity';
 
 @ObjectType()
 export class DeleteRecipeResponse {
-    constructor(recipe: Recipe, status: string, code: number) {
+    constructor(recipe: Recipe, status = 'DELETED', code = 200) {
         this.data = recipe;
         this.status = status;
         this.code = code;

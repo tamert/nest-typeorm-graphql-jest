@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 import { DeleteUserResponse } from './dto/delete-response.dto';
 import { PaginatedUser } from './dto/paginate-response.dto';
 import { PaginateInput } from '../common/dto/paginate.input';
-import { JwtAuthGuard, Public } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, Public, Role } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 const pubSub = new PubSub();
@@ -36,25 +36,24 @@ export class UsersResolver {
     @Query(() => PaginatedUser)
     @Public()
     async users(@Args() options: PaginateInput): Promise<PaginatedUser> {
-        return await this.usersService.paginate({
-            limit: options.limit,
-            page: options.page,
-            route: '/',
-        });
+        return await this.usersService.paginate(options);
     }
 
     @Mutation(() => User)
+    @Public()
     async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<User> {
         const user = await this.usersService.create(newUserData);
         await pubSub.publish('userAdded', { userAdded: user });
         return user;
     }
 
+    @Role('ROLE_ADMIN')
     @Mutation(() => DeleteUserResponse)
     async removeUser(@Args('id') id: string): Promise<DeleteUserResponse> {
         return await this.usersService.remove(id);
     }
 
+    @Role('ROLE_ADMIN')
     @Subscription(() => User)
     userAdded() {
         return pubSub.asyncIterator('userAdded');
