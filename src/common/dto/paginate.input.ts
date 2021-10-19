@@ -12,8 +12,9 @@ export class PaginateInput {
     search?: string = null;
 
     @Field(() => Int)
-    @Min(0)
-    page = 0;
+    @Min(1)
+    @IsOptional()
+    page = 1;
 
     @Field(() => Int)
     @Min(1)
