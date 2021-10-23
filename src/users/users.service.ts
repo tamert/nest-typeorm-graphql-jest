@@ -1,40 +1,40 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { NewUserInput } from './dto/new-user.input';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
-import { Connection } from 'typeorm/index';
 import { DeleteUserResponse } from './dto/delete-response.dto';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { IPaginated, PageInfo } from '../common/dto/paginate-response.dto';
+import { Connection } from 'typeorm/index';
+import { PaginateInput } from '../common/dto/paginate.input';
 
 @Injectable()
 export class UsersService {
-    private userRepository: UserRepository;
+    private repository: UserRepository;
 
     constructor(private readonly connection: Connection) {
-        this.userRepository = this.connection.getCustomRepository(UserRepository);
+        this.repository = this.connection.getCustomRepository(UserRepository);
     }
 
     async create(data: NewUserInput): Promise<User> {
-        return await this.userRepository.createUser(data);
+        return await this.repository.createUser(data);
     }
 
     async findOneById(id: string): Promise<User> {
-        return await this.userRepository.findOne(id);
+        return await this.repository.findOne(id);
     }
 
     async findOne(data: any): Promise<User> {
-        return await this.userRepository.findOne(data);
+        return await this.repository.findOne(data);
     }
 
-    async findAll(usersArgs: { skip: 0; take: 10 }): Promise<User[]> {
-        return await this.userRepository.find(usersArgs);
-    }
-
-    async paginate(options: IPaginationOptions): Promise<IPaginated<User>> {
-        const queryBuilder = this.userRepository.createQueryBuilder('c');
-        queryBuilder.orderBy('c.id', 'DESC'); // Or whatever you need to do
-        const { items, links, meta } = await paginate<User>(queryBuilder, options);
+    async paginate(options: PaginateInput): Promise<IPaginated<User>> {
+        const queryBuilder = this.repository.paginate(options);
+        const { items, links, meta } = await paginate<User>(queryBuilder, {
+            limit: options.limit,
+            page: options.page,
+            route: '/',
+        } as IPaginationOptions);
         return {
             currentPage: meta.currentPage,
             totalCount: meta.totalItems,
@@ -45,18 +45,15 @@ export class UsersService {
     }
 
     async remove(id: string): Promise<DeleteUserResponse> {
-        try {
-            const relatedUser = await this.userRepository.findOneOrFail(id);
-            await this.userRepository.delete(id);
-            return new DeleteUserResponse(relatedUser, 'DELETED', 200);
-        } catch (e) {
-            if (e.status === 401) {
-                throw new UnauthorizedException(e.message);
-            } else if (e.status === 404) {
-                throw new NotFoundException(e.message);
-            } else {
-                throw new BadRequestException(e.message);
-            }
+        const relatedUser = await this.repository.findOneOrFail(id);
+        if (!(relatedUser instanceof User)) {
+            throw new NotFoundException('user not found!');
         }
+        try {
+            await this.repository.delete(id);
+        } catch (e) {
+            throw new BadRequestException(e.message);
+        }
+        return new DeleteUserResponse(relatedUser);
     }
 }

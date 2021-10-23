@@ -20,15 +20,6 @@ export class Recipe {
     @Field(() => ID)
     id: number;
 
-    @Field()
-    @Directive('@upper')
-    @Column({ length: 255 })
-    title: string;
-
-    @Field({ nullable: true })
-    @Column({ length: 255 })
-    description?: string;
-
     @Field({ middleware: [fieldPermissionMiddleware] })
     @Extensions({ role: ['ROLE_USER', 'ROLE_ADMIN'] })
     @CreateDateColumn()
@@ -36,10 +27,6 @@ export class Recipe {
 
     @DeleteDateColumn()
     deletedAt?: Date;
-
-    @Field(() => [String])
-    @Column('simple-json')
-    ingredients: string[];
 
     @Field(() => User)
     @ManyToOne(() => User, (recipe) => recipe.recipes, { onDelete: 'CASCADE' })

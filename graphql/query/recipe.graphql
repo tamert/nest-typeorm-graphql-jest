@@ -1,14 +1,14 @@
 query($id: String!) {
     recipe(id: $id) {
             id
-            title
-            description,
         translations {
             name,
+            description,
             locale
         },
         translate {
-            name
+            name,
+            description
         }
     }
 }

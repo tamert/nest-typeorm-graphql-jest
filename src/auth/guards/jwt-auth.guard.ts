@@ -22,6 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     canActivate(context: ExecutionContext) {
         const ctx = GqlExecutionContext.create(context);
         const { req } = ctx.getContext();
+
         this.public = this.reflector.get<boolean>('public', context.getHandler());
         this.permissions = this.reflector.get<string[]>('permissions', context.getHandler());
         this.roles = this.reflector.get<string[]>('roles', context.getHandler());
@@ -48,12 +49,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
                     throw new ForbiddenException();
                 }
             }
-        } else {
-            if (this.public && (this.roles && this.roles.length) === 0 && this.permissions && this.permissions.length)
-                return user;
-            throw new UnauthorizedException();
         }
 
-        return user;
+        if (user) return user;
+        if (this.public) return true;
+        throw new UnauthorizedException();
     }
 }

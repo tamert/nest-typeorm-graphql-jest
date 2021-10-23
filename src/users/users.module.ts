@@ -11,7 +11,7 @@ import { PermissionModule } from './permission/permission.module';
 
 @Module({
     imports: [PermissionModule, AuthModule, TypeOrmModule.forFeature([User, UserRepository])],
-    providers: [UsersResolver, UsersSubscriber, UsersService, UserRepository, DateScalar],
+    providers: [UsersResolver, UsersSubscriber, UsersService, DateScalar],
     exports: [UsersService],
 })
 export class UsersModule {}

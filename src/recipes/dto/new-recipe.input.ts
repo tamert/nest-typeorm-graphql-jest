@@ -11,6 +11,9 @@ export class NewRecipeTranslation {
     @MaxLength(255)
     name: string;
 
+    @Field(() => [String])
+    ingredients: string[];
+
     @Field()
     @IsOptional()
     description: string;
@@ -18,18 +21,6 @@ export class NewRecipeTranslation {
 
 @InputType()
 export class NewRecipeInput {
-    @Field()
-    @MaxLength(30)
-    title: string;
-
-    @Field({ nullable: true })
-    @IsOptional()
-    @Length(30, 255)
-    description?: string;
-
-    @Field(() => [String])
-    ingredients: string[];
-
     @Field(() => [NewRecipeTranslation])
     translations: NewRecipeTranslation[];
 }

@@ -1,22 +1,22 @@
 mutation {
     addRecipe(
         newRecipeData: {
-            title: "Limonata",
-            description: "limonata nasıl yapılır gelin beraber inceleyelim.",
-            ingredients: ["limon","şeker","su"],
             translations: [{
-                name: "bbbbbbbbbbbbbb",
-                description: "teasdsadadasdadasdast",
-                locale: "en"
+                name: "Lemonade",
+                description: "Let's take a look at how to make lemonade.",
+                locale: "en",
+                ingredients: ["limon","şeker","su"],
             }, {
-                locale: "tr", name: "aaaaaaaaaaa", description: "sadada"
+                locale: "tr",
+                name: "Limonata",
+                description: "limonata nasıl yapılır gelin beraber inceleyelim.",
+                ingredients: ["limon","şeker","su"],
             }]
         }
     ) {
-        title
         id
-        ingredients,
         translate {
+            name
             description
         },
         translations {
